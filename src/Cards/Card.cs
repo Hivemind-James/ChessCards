@@ -8,5 +8,9 @@ namespace MyGame
 {
     abstract public class Card
     {
+        public abstract bool IsPlayable(Game game);
+        public abstract void Resolve(Game game);
+        public abstract void DrawSmall();
+        public abstract void DrawLarge();
     }
 }
