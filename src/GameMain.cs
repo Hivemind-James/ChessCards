@@ -10,7 +10,10 @@ namespace MyGame
             //Open the game window
             SwinGame.OpenGraphicsWindow("GameMain", 800, 600);
             SwinGame.ShowSwinGameSplashScreen();
-            
+
+            Board b = new Board();
+            b.Setup();
+
             //Run the game loop
             while(false == SwinGame.WindowCloseRequested())
             {
