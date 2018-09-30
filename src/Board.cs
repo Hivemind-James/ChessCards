@@ -19,11 +19,16 @@ namespace MyGame
         {
             for (int i = 0; i < 16; i++) _cells.Add((Position)i, HelperFunctions.Setup(i));
             for (int i = 48; i < 64; i++) _cells.Add((Position)i, HelperFunctions.Setup(i));
-            foreach (KeyValuePair<Position, Piece> p in _cells)
-            {
-                Console.WriteLine(p.Key.ToString() + ": " + p.Value.Owner.ToString() + " " + p.Value.Kind.ToString());
-            }
         }
 
+        public string CurrentBoardState()
+        {
+            string _state = "";
+            foreach (KeyValuePair<Position, Piece> p in _cells)
+            {
+                _state += p.Key.ToString() + ": " + p.Value.Owner.ToString() + " " + p.Value.Kind.ToString() + "\n";
+            }
+            return _state;
+        }
     }
 }
