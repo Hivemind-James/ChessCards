@@ -42,6 +42,7 @@
     <Compile Include="src\Enumerations.cs" />
     <Compile Include="src\Game.cs" />
     <Compile Include="src\GameMain.cs" />
+    <Compile Include="src\HelperFunctions.cs" />
     <Compile Include="src\Pieces\Bishop.cs" />
     <Compile Include="src\Pieces\King.cs" />
     <Compile Include="src\Pieces\Knight.cs" />
