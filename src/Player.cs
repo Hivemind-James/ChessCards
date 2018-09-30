@@ -8,5 +8,6 @@ namespace MyGame
 {
     public class Player
     {
+        private List<Card> _hand;
     }
 }
