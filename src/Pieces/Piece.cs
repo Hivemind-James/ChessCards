@@ -27,6 +27,12 @@ namespace MyGame
             _position = position;
         }
 
+
+        public override string ToString()
+        {
+            return Position.ToString() + ": " + Owner.ToString() + " " + Kind.ToString() + "\n";
+        }
+
         public Position Position
         {
             get

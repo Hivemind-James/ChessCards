@@ -21,6 +21,11 @@ namespace MyGame
             for (int i = 48; i < 64; i++) _cells.Add((Position)i, HelperFunctions.Setup(i));
         }
 
+        public void Add(Position position, Piece piece)
+        {
+            _cells.Add(position, piece);
+        }
+
         public string CurrentBoardState()
         {
             string _state = "";
@@ -29,6 +34,15 @@ namespace MyGame
                 _state += p.Key.ToString() + ": " + p.Value.Owner.ToString() + " " + p.Value.Kind.ToString() + "\n";
             }
             return _state;
+        }
+
+        public Piece Find(Position position)
+        {
+            if (_cells.ContainsKey(position))
+            {
+                return _cells[position];
+            }
+            return null;
         }
     }
 }

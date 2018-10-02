@@ -52,5 +52,19 @@ namespace MyGame
             string actual = _board.CurrentBoardState();
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void TestEmptyCell()
+        {
+            Assert.IsNull(_board.Find(Position.C1));
+        }
+
+        [TestMethod]
+        public void TestFullCell()
+        {
+            string expected = "A1: White Rook\n";
+            string actual = _board.Find(Position.A1).ToString();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

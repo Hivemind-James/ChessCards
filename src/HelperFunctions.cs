@@ -8,13 +8,20 @@ namespace MyGame
 {
     class HelperFunctions
     {
+        //This function returns a list of integers (the first element being x and the second y).
+        //The function is used in the Piece Child classes to help determine is a move is legal
         public static List<int> GetRelativePosition(Position origin, Position end)
         {
-            //This gets the new position in terms of Y in order to check if the position is outside the board
-            int oldPosition = origin.GetHashCode();
-            int oldX = oldPosition % 8;
-            int oldY = oldP
-
+            List<int> positionDelta = new List<int>();
+            int originPosition = origin.GetHashCode();
+            int originX = originPosition % 8;
+            int originY = originPosition / 8;
+            int endPosition = end.GetHashCode();
+            int endX = endPosition % 8;
+            int endY = endPosition / 8;
+            positionDelta.Add(endX - originX);
+            positionDelta.Add(endY - originY);
+            return positionDelta;
         }
 
         public static Piece Setup(int position)

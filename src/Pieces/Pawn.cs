@@ -18,8 +18,34 @@ namespace MyGame
         }
         public override bool CanMoveTo(Board board, Position position)
         {
-            if (!_hasMoved) RelativePosition.
-            return
+            int maxDistance = (!_hasMoved) ? 2 : 1;
+            List<int> relativePos = HelperFunctions.GetRelativePosition(Position, position);
+            switch (Owner)
+            {
+                case PlayerColour.White :
+                    // returns if the position is empty and the correct distance from the pawn
+                    if (relativePos[1] <= maxDistance &&
+                        relativePos[1] > 0 &&
+                        relativePos[0] == 0 &&
+                        board.Find(position) == null) return true;
+                    // returns if the diagonal has an enemy piece
+                    if (relativePos[1] == 1 &&
+                        Math.Abs(relativePos[0]) == 1 &&
+                        board.Find(position) != null &&
+                        board.Find(position).Owner == PlayerColour.Black) return true;
+                    break;
+                case PlayerColour.Black:
+                    if (relativePos[1] <= -maxDistance &&
+                        relativePos[1] < 0 &&
+                        relativePos[0] == 0 &&
+                        board.Find(position) == null) return true;
+                    if (relativePos[1] == -1 &&
+                        Math.Abs(relativePos[0]) == 1 &&
+                        board.Find(position) != null &&
+                        board.Find(position).Owner == PlayerColour.White) return true;
+                    break;
+            }
+            return false;
         }
 
         public override Bitmap MoveMap(Board board)
