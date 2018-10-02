@@ -8,20 +8,13 @@ namespace MyGame
 {
     class HelperFunctions
     {
-        public static Position GetRelativePosition(Position position, int deltaX, int deltaY)
+        public static List<int> GetRelativePosition(Position origin, Position end)
         {
             //This gets the new position in terms of Y in order to check if the position is outside the board
-            int newPosition = position.GetHashCode() + (8 * deltaY);
+            int oldPosition = origin.GetHashCode();
+            int oldX = oldPosition % 8;
+            int oldY = oldP
 
-            //This gets the new position in terms of X in order to check if the position is outside the board
-            int checkWrap = newPosition % 8 + deltaX;
-
-            if (newPosition < 0 || newPosition > 63) return Position.NotAPosition;
-            if (checkWrap < 0 || checkWrap > 7) return Position.NotAPosition;
-
-            // if both cases are false then the position that is being checked is on the board.
-            else newPosition += deltaX;
-            return (Position)newPosition;
         }
 
         public static Piece Setup(int position)

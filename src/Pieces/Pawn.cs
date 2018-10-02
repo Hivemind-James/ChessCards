@@ -18,7 +18,8 @@ namespace MyGame
         }
         public override bool CanMoveTo(Board board, Position position)
         {
-            return false;
+            if (!_hasMoved) RelativePosition.
+            return
         }
 
         public override Bitmap MoveMap(Board board)
