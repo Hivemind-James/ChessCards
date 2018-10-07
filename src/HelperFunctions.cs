@@ -37,6 +37,16 @@ namespace MyGame
 
         }
 
+        public static List<int> GetAbsPos(Position position)
+        {
+            int x = position.GetHashCode() % 8;
+            int y = position.GetHashCode() / 8;
+            List<int> absPos = new List<int>();
+            absPos.Add(x);
+            absPos.Add(y);
+            return absPos;
+        }
+
         public static Piece Setup(int position)
         {
             // This function returns the correct piece for a given space during setup

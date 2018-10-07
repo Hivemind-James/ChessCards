@@ -32,8 +32,9 @@ namespace MyGame
                         canMove = true;
                         relativePos[0] -= xSign;
                         relativePos[1] -= ySign;
-                        current = (Position)(8 * (relativePos[1]) + relativePos[0] - ySign);
-                        if (board.Find(current).Owner != Owner)
+                        List<int> originPos = HelperFunctions.GetAbsPos(Position);
+                        current = (Position)(8*(originPos[0]+relativePos[0])+originPos[1]+relativePos[1]);
+                        if (board.Find(current) != null && board.Find(current).Owner != Owner)
                         {
                             if (hasSeenEnemy)
                             {
