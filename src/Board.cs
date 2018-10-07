@@ -26,6 +26,11 @@ namespace MyGame
             _cells.Add(position, piece);
         }
 
+        public void Remove(Position position)
+        {
+            _cells.Remove (position);
+        }
+
         public string CurrentBoardState()
         {
             string _state = "";

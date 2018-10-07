@@ -39,6 +39,7 @@ namespace MyGame
             {
                 return _position;
             }
+            set { _position = value; }
         }
 
         public Kind Kind
