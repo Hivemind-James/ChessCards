@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SwinGameSDK;
 
 namespace MyGame
 {
@@ -22,6 +23,18 @@ namespace MyGame
             positionDelta.Add(endX - originX);
             positionDelta.Add(endY - originY);
             return positionDelta;
+        }
+
+        public static Position PositionClicked ()
+        {
+            Point2D mouse = default (Point2D);
+            mouse = SwinGame.MousePosition ();
+            int row = 0;
+            int column = 0;
+            row = Convert.ToInt32 (Math.Floor ((mouse.Y - 0) / (56.25 + 0)));
+            column = Convert.ToInt32 (Math.Floor ((mouse.X + (SwinGame.ScreenWidth () - 450) / (56.25 + 0))));
+            return (Position)(column * 8 + row);
+
         }
 
         public static Piece Setup(int position)

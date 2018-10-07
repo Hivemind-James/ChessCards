@@ -12,6 +12,7 @@ namespace MyGame
         private Board _board;
         private int _turn;
         private GameState _state;
+        private Piece _selected;
 
         public Game()
         {
@@ -31,7 +32,24 @@ namespace MyGame
 
         public void DoMove()
         {
-            throw new NotImplementedException();
+            Position _newclick = HelperFunctions.PositionClicked ();
+            // _selected = _board.Find (_newclick);
+            Piece _newpiece = _board.Find (_newclick);
+
+
+            if (_newpiece !=null && _newpiece.Owner == ActivePlayer)
+            {
+                _selected = _newpiece;
+            } 
+            else if (_selected != null && _selected.CanMoveTo (_board, _newclick))
+            {
+                _board.Remove (_newclick);
+                _board.Add (_newclick, _selected);
+                _board.Remove (_selected.Position);
+                _selected.Position = _newclick;
+            }
+
+
         }
 
         public void PlayCard()
