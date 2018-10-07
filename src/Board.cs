@@ -49,5 +49,14 @@ namespace MyGame
             }
             return null;
         }
+
+        public bool Contains(Kind kind, PlayerColour player)
+        {
+            foreach (KeyValuePair<Position, Piece> piece in _cells)
+            {
+                if (piece.Value.Owner == player && piece.Value.Kind == kind) return true;
+            }
+            return false;
+        }
     }
 }

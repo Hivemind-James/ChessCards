@@ -64,5 +64,21 @@ namespace MyGame
                 return (_turn % 2 == 1) ? PlayerColour.White : PlayerColour.Black;
             }
         }
+
+        public int Turn
+        {
+            get
+            {
+                return _turn;
+            }
+        }
+
+        public Board Board
+        {
+            get
+            {
+                return _board;
+            }
+        }
     }
 }
