@@ -35,9 +35,6 @@ namespace MyGame
             Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.E6));
             Assert.IsTrue(_board.Find(Position.E6).CanMoveTo(_board, Position.D5));
             _board.Remove(Position.E6);
-
-
-
         }
 
         [TestMethod]
