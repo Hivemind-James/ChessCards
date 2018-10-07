@@ -19,6 +19,7 @@ namespace MyGame
             throw new NotImplementedException();
         }
 
+
         public override Bitmap MoveMap(Board board)
         {
             throw new NotImplementedException();
