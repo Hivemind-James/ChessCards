@@ -38,12 +38,32 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void TestPawnAttack()
+        public void CantHitMoreThanOneEnemy()
         {
-            _board.Add(Position.A1, new Pawn(Position.A1, PlayerColour.White));
-            Assert.IsFalse(_board.Find(Position.A1).CanMoveTo(_board, Position.B2));
+            _board.Add(Position.A3, new Bishop(Position.A3, PlayerColour.White));
             _board.Add(Position.B2, new Pawn(Position.B2, PlayerColour.Black));
-            Assert.IsTrue(_board.Find(Position.A1).CanMoveTo(_board, Position.B2));
+            _board.Add(Position.C1, new Pawn(Position.C1, PlayerColour.Black));
+            Assert.IsTrue(_board.Find(Position.A3).CanMoveTo(_board, Position.C1));
         }
+
+        [TestMethod]
+        public void idek()
+        {
+            _board.Add(Position.A3, new Bishop(Position.A3, PlayerColour.White));
+        //   _board.Add(Position.B2, new Pawn(Position.B2, PlayerColour.Black));
+        //    _board.Add(Position.C1, new Pawn(Position.C1, PlayerColour.Black));
+            Assert.IsTrue(_board.Find(Position.A3).CanMoveTo(_board, Position.C1));
+        }
+
+
+        /*  [TestMethod]
+          public void TestPawnAttack()
+          {
+              _board.Add(Position.A1, new Pawn(Position.A1, PlayerColour.White));
+              Assert.IsFalse(_board.Find(Position.A1).CanMoveTo(_board, Position.B2));
+              _board.Add(Position.B2, new Pawn(Position.B2, PlayerColour.Black));
+              Assert.IsTrue(_board.Find(Position.A1).CanMoveTo(_board, Position.B2));
+          }
+          */
     }
 }
