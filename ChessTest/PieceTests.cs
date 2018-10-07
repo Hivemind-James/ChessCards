@@ -6,32 +6,38 @@ namespace MyGame
     public class PieceTests
     {
         Board _board;
+        Game _game;
 
         [TestInitialize]
         public void Setup()
         {
             _board = new Board();
+            _game = new Game();
         }
 
         [TestMethod]
-        public void TestingPawnMovement()
+        public void PawnMovement()
         {
             _board.Add(Position.D5, new Pawn(Position.D5, PlayerColour.White));
             Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.E5));
-            
+            _board.Remove(Position.D5);
+
             _board.Add(Position.D5, new Pawn(Position.D5, PlayerColour.White));
-            Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.F5));
+            Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.F5));    
+            _board.Remove(Position.D5);
         }
 
         [TestMethod]
         public void PawnAttack()
         {
-            _board.Add(Position.A1, new Pawn(Position.A1, PlayerColour.White));
-            Assert.IsTrue(_board.Find(Position.A1).CanMoveTo(_board, Position.B1));
+            _board.Add(Position.D5, new Pawn(Position.D5, PlayerColour.White));
+            _board.Add(Position.E6, new Pawn(Position.E6, PlayerColour.Black));
+            Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.E6));
+            Assert.IsTrue(_board.Find(Position.E6).CanMoveTo(_board, Position.D5));
+            _board.Remove(Position.E6);
 
 
-            _board.Add(Position.B1, new Pawn(Position.B1, PlayerColour.Black));
-            Assert.IsFalse(_board.Find(Position.A1).CanMoveTo(_board, Position.B1));
+
         }
 
         [TestMethod]
