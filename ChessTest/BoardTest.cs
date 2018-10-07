@@ -15,7 +15,7 @@ namespace MyGame
             _board.Setup();
         }
         [TestMethod]
-        public void TestSetup()
+        public void BoardSetup()
         {
             string expected =   "A1: White Rook\n" +
                                 "A2: White Knight\n" +
