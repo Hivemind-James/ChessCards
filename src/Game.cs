@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SwinGameSDK;
 
 namespace MyGame
 {
@@ -52,7 +53,35 @@ namespace MyGame
 
         }
 
+        public void Play()
+        {
+            SwinGame.OpenGraphicsWindow("Secret Technique Chess", 800, 600);
+            do
+            {
+                SwinGame.ProcessEvents();
+                switch (_state)
+                {
+                    case GameState.Setup:
+                        Setup();
+                        break;
+                    case GameState.PlayCard:
+                        PlayCard();
+                        break;
+                    case GameState.DoMove:
+                        DoMove();
+                        break;
+                }
+                SwinGame.RefreshScreen(60);
+            } while (SwinGame.WindowCloseRequested() == false);
+
+        }
+
         public void PlayCard()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Setup()
         {
             throw new NotImplementedException();
         }
