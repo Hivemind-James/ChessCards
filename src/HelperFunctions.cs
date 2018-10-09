@@ -43,7 +43,7 @@ namespace MyGame
             mouse = SwinGame.MousePosition ();
             int row = 0;
             int column = 0;
-            row = Convert.ToInt32 (Math.Floor ((mouse.Y - 0) / (56.25 + 0)));
+            row = 7 - Convert.ToInt32 (Math.Floor ((mouse.Y - 0) / (56.25 + 0)));
             column = Convert.ToInt32 (Math.Floor ((mouse.X + (SwinGame.ScreenWidth () - 450) / (56.25 + 0))));
             return (Position)(column * 8 + row);
 
