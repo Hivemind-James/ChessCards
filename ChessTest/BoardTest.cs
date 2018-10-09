@@ -15,7 +15,7 @@ namespace MyGame
             _board.Setup();
         }
         [TestMethod]
-        public void BoardSetup()
+        public void BoardSetup_Week8()
         {
             string expected =   "A1: White Rook\n" +
                                 "A2: White Knight\n" +
@@ -54,13 +54,13 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void TestEmptyCell()
+        public void EmptyCell_Week8()
         {
             Assert.IsTrue(_board.Find(Position.C1).Owner == PlayerColour.NoOwner);
         }
 
         [TestMethod]
-        public void TestFullCell()
+        public void FullCell_Week8()
         {
             string expected = "A1: White Rook\n";
             string actual = _board.Find(Position.A1).ToString();

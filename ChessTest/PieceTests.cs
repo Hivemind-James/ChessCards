@@ -16,15 +16,22 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void PawnMovement()
+        public void PawnMovement_Week8()
         {
             _board.Add(Position.D5, new Pawn(Position.D5, PlayerColour.White));
             Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.E5));
             _board.Remove(Position.D5);
 
+        }
+
+        [TestMethod]
+        public void PawnMovementFirstTurn_Week8()
+        {
+
             _board.Add(Position.D5, new Pawn(Position.D5, PlayerColour.White));
             Assert.IsTrue(_board.Find(Position.D5).CanMoveTo(_board, Position.F5));    
             _board.Remove(Position.D5);
+
         }
 
         [TestMethod]
@@ -49,10 +56,7 @@ namespace MyGame
         [TestMethod]
         public void idek()
         {
-            _board.Add(Position.A3, new Bishop(Position.A3, PlayerColour.White));
-        //   _board.Add(Position.B2, new Pawn(Position.B2, PlayerColour.Black));
-        //    _board.Add(Position.C1, new Pawn(Position.C1, PlayerColour.Black));
-            Assert.IsTrue(_board.Find(Position.A3).CanMoveTo(_board, Position.C1));
+
         }
 
 
