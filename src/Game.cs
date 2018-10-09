@@ -46,7 +46,7 @@ namespace MyGame
                 _board.Remove (_newclick);
                 _board.Add (_newclick, _selected);
                 _board.Remove (_selected.Position);
-                _selected.Position = _newclick;
+                _selected.NewPosition(_newclick);
             }
 
 

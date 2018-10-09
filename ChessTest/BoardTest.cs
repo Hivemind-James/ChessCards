@@ -56,7 +56,7 @@ namespace MyGame
         [TestMethod]
         public void TestEmptyCell()
         {
-            Assert.IsNull(_board.Find(Position.C1));
+            Assert.IsTrue(_board.Find(Position.C1).Owner == PlayerColour.NoOwner);
         }
 
         [TestMethod]

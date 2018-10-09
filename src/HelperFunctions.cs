@@ -7,7 +7,7 @@ using SwinGameSDK;
 
 namespace MyGame
 {
-    class HelperFunctions
+    public static class HelperFunctions
     {
         //This function returns a list of integers (the first element being x and the second y).
         //The function is used in the Piece Child classes to help determine is a move is legal
@@ -23,6 +23,18 @@ namespace MyGame
             positionDelta.Add(endX - originX);
             positionDelta.Add(endY - originY);
             return positionDelta;
+        }
+
+        public static Position GetNewPosition(Position position, List<int> deltaPosition)
+        {
+            return GetNewPosition(position, deltaPosition[0], deltaPosition[1]);
+        }
+        public static Position GetNewPosition(Position position, int deltaX, int deltaY)
+        {
+            List<int> tempPosition = GetAbsPos(position);
+            tempPosition[0] += deltaX;
+            tempPosition[1] += deltaY;
+            return GetAbsPos(tempPosition);
         }
 
         public static Position PositionClicked ()
@@ -45,6 +57,16 @@ namespace MyGame
             absPos.Add(x);
             absPos.Add(y);
             return absPos;
+        }
+
+        public static Position GetAbsPos(List<int> position)
+        {
+            return (Position)(8 * position[1] + position[0]);
+        }
+
+        public static PlayerColour GetOpponent(PlayerColour player)
+        {
+            return (player == PlayerColour.White) ? PlayerColour.Black : PlayerColour.White;
         }
 
         public static Piece Setup(int position)

@@ -47,7 +47,7 @@ namespace MyGame
             {
                 return _cells[position];
             }
-            return null;
+            return new NullPiece();
         }
 
         public bool Contains(Kind kind, PlayerColour player)

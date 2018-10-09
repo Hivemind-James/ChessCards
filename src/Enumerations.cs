@@ -16,7 +16,8 @@ namespace MyGame
     public enum PlayerColour
     {
         White,
-        Black
+        Black,
+        NoOwner
     }
 
     public enum Kind

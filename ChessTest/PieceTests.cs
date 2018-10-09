@@ -43,7 +43,7 @@ namespace MyGame
             _board.Add(Position.A3, new Bishop(Position.A3, PlayerColour.White));
             _board.Add(Position.B2, new Pawn(Position.B2, PlayerColour.Black));
             _board.Add(Position.C1, new Pawn(Position.C1, PlayerColour.Black));
-            Assert.IsTrue(_board.Find(Position.A3).CanMoveTo(_board, Position.C1));
+            Assert.IsFalse(_board.Find(Position.A3).CanMoveTo(_board, Position.C1));
         }
 
         [TestMethod]

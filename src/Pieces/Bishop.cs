@@ -20,29 +20,31 @@ namespace MyGame
             bool hasSeenEnemy = false;
             List<int> relativePos = HelperFunctions.GetRelativePosition(Position, position);
             Position current = position;
-            int xSign = Math.Sign(relativePos[0]);
-            int ySign = Math.Sign(relativePos[1]);
 
             if (Math.Abs(relativePos[0]) == Math.Abs(relativePos[1]) && relativePos[0] != 0)
             {
                 while (relativePos[0] != 0)
                 {
-                    if (board.Find(current) == null || board.Find(current).Owner != Owner)
+                    if (board.Find(current).Owner != Owner)
                     {
                         canMove = true;
-                        relativePos[0] -= xSign;
-                        relativePos[1] -= ySign;
-                        List<int> originPos = HelperFunctions.GetAbsPos(Position);
-                        current = (Position)(8*(originPos[0]+relativePos[0])+originPos[1]+relativePos[1]);
-                        if (board.Find(current) != null && board.Find(current).Owner != Owner)
+                        if (board.Find(current).Owner == HelperFunctions.GetOpponent(Owner))
                         {
                             if (hasSeenEnemy)
                             {
                                 canMove = false;
                                 break;
                             }
-                            else canMove = true;
+                            else hasSeenEnemy = true;
                         }
+                        relativePos[0] -= Math.Sign(relativePos[0]);
+                        relativePos[1] -= Math.Sign(relativePos[1]);
+                        current = HelperFunctions.GetNewPosition(Position, relativePos);
+                    }
+                    else
+                    {
+                        canMove = false;
+                        break;
                     }
                 }
             }

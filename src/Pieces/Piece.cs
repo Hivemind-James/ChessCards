@@ -18,7 +18,7 @@ namespace MyGame
 
         public Piece(Position position, PlayerColour player)
         {
-            NewPosition(position);
+            _position = position;
             _owner = player;
         }
 
