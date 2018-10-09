@@ -159,6 +159,36 @@ namespace MyGame
         }
     }
 
+    public class KillerQueen : Card
+    {
+        public KillerQueen(int turn, PlayerColour player) : base(turn, player) { }
+
+        public override void DrawLarge()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DrawSmall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsPlayable(Game game)
+        {
+            if (game.Turn < MinimumTurn) return false;
+            Queen queen = game.Board.Find(Kind.Queen, Owner) as Queen;
+            for (int i = -1; i <= 1; i++)
+                for (int j = -1; j <= 1; j++)
+                    if (game.Board.Find(HelperFunctions.GetNewPosition(queen.Position, new List<int>() { i, j })).Kind == Kind.King) return false;
+            return true;
+        }
+
+        public override void Resolve(Game game)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /*******************************************************************************
      *  CARDS TO ADD
      * *****************************************************************************

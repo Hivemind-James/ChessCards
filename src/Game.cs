@@ -57,6 +57,13 @@ namespace MyGame
             throw new NotImplementedException();
         }
 
+        public void Draw()
+        {
+            //draw background
+            //draw selected  options bitmap (a bitmap overlay for the board that shows possible moves)
+            //draw pieces
+            //draw cards
+        }
         public PlayerColour ActivePlayer
         {
             get

@@ -50,6 +50,15 @@ namespace MyGame
             return new NullPiece();
         }
 
+        public Piece Find(Kind kind, PlayerColour player)
+        {
+            foreach (KeyValuePair<Position, Piece> piece in _cells)
+            {
+                if (piece.Value.Owner == player && piece.Value.Kind == kind) return piece.Value;
+            }
+            return new NullPiece();
+        }
+
         public bool Contains(Kind kind, PlayerColour player)
         {
             foreach (KeyValuePair<Position, Piece> piece in _cells)
