@@ -9,19 +9,35 @@ namespace MyGame
 {
     public class King : Piece
     {
+        private bool _hasMoved;
         public King(Position position, PlayerColour player) : base(position, player)
         {
             _kind = Kind.King;
+            _hasMoved = false;
         }
 
-        public override bool CanMoveTo(Board board, Position position)
+        public override bool CanMoveTo (Board board, Position position)
         {
-            throw new NotImplementedException();
+            bool canMove = false;
+            List<int> relativePos = HelperFunctions.GetRelativePosition (Position, position);
+            if (Math.Abs (relativePos [0]) <= 1 && Math.Abs (relativePos [1]) <= 1) if (board.Find (position).Owner != Owner) canMove = true;
+            return canMove; 
         }
 
         public override Bitmap MoveMap(Board board)
         {
             throw new NotImplementedException();
+        }
+
+        public override void NewPosition (Position position)
+        {
+            base.NewPosition (position);
+            _hasMoved = true;
+        }
+
+        private bool HasMoved
+        {
+            get { return _hasMoved; }
         }
     }
 }
