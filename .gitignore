@@ -1,7 +1,7 @@
 *.lock
 .vs
 bin
-/ChessTest/v15/.suo
+ChessTest/v15/.suo
 ChessTest/.vs
 ChessTest/bin
 ChessTest/obj
