@@ -20,7 +20,7 @@ namespace MyGame
             _players = new Dictionary<PlayerColour, Player>();
             foreach (PlayerColour player in Enum.GetValues(typeof(PlayerColour)))
             {
-                //_players.Add(player, new Player(player));
+                _players.Add(player, new Player(player));
             }
 
             _board = new Board();
@@ -28,7 +28,7 @@ namespace MyGame
 
             _turn = 1;
 
-            _state = GameState.Setup;
+            _state = GameState.PlayCard;
         }
 
         public void DoMove()
@@ -59,6 +59,7 @@ namespace MyGame
             do
             {
                 SwinGame.ProcessEvents();
+                SwinGame.ClearScreen(Color.White);
                 switch (_state)
                 {
                     case GameState.Setup:
@@ -71,14 +72,14 @@ namespace MyGame
                         DoMove();
                         break;
                 }
-                SwinGame.RefreshScreen(60);
+                SwinGame.RefreshScreen();
             } while (SwinGame.WindowCloseRequested() == false);
 
         }
 
         public void PlayCard()
         {
-            throw new NotImplementedException();
+            _players[ActivePlayer].DrawHand();
         }
 
         public void Setup()

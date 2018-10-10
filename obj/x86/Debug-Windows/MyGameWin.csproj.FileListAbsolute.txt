@@ -1,2 +1,0 @@
-C:\Users\James\Desktop\Code\Software Development Project 1\HD Project\ChessCards\obj\x86\Debug-Windows\MyGameWin.csprojAssemblyReference.cache
-C:\Users\James\Desktop\Code\Software Development Project 1\HD Project\ChessCards\obj\x86\Debug-Windows\MyGameWin.csproj.CoreCompileInputs.cache

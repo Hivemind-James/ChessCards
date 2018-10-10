@@ -11,17 +11,41 @@ namespace MyGame
     {
         private int _minTurn;
         private PlayerColour _owner;
+        private string _name;
+        private string _description;
 
+        protected float _smallWidth;
+        protected float _smallHeight;
+        protected float _largeWidth;
+        protected float _largeHeight;
+
+       
+        public Card(int turn, PlayerColour player, string name) : this (turn, player)
+        {
+            _name = name;
+        }
         public Card(int turn, PlayerColour player)
         {
             _minTurn = turn;
             _owner = player;
+
+            _smallWidth = 80;
+            _smallHeight = 120;
+            _largeWidth = 250;
+            _largeHeight = 350;
         }
 
         public abstract bool IsPlayable(Game game);
         public abstract void Resolve(Game game);
-        public abstract void DrawSmall();
-        public abstract void DrawLarge();
+        public virtual void DrawSmall(int count)
+        {
+            SwinGame.DrawRectangle(Color.Black, (count * _smallWidth), SwinGame.ScreenHeight() - _smallHeight, _smallWidth, _smallHeight);
+            SwinGame.DrawText(_name, Color.Black, (count * _smallWidth), SwinGame.ScreenHeight() - _smallHeight);
+        }
+        public virtual void DrawLarge(int x, int y)
+        {
+            SwinGame.DrawRectangle(Color.Black, x, y, _largeWidth, _largeHeight);
+        }
 
         public int MinimumTurn
         {
@@ -38,6 +62,12 @@ namespace MyGame
                 return _owner;
             }
         }
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 
     public class KillPiece : Card
@@ -49,16 +79,6 @@ namespace MyGame
         {
             _target = kind;
             _enemy = (owner == PlayerColour.White) ? PlayerColour.Black : PlayerColour.White;
-        }
-
-        public override void DrawLarge()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void DrawSmall()
-        {
-            throw new NotImplementedException();
         }
 
         public override bool IsPlayable(Game game)
@@ -91,16 +111,6 @@ namespace MyGame
             _promoOptions = promotionOptions;
         }
 
-        public override void DrawLarge()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void DrawSmall()
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool IsPlayable(Game game)
         {
             bool isPlayable = false;
@@ -131,17 +141,7 @@ namespace MyGame
             _targets = targets;
             _promoOptions = promotionOptions;
         }
-
-        public override void DrawLarge()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void DrawSmall()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public override bool IsPlayable(Game game)
         {
             bool isPlayable = false;
@@ -161,16 +161,11 @@ namespace MyGame
 
     public class KillerQueen : Card
     {
-        public KillerQueen(int turn, PlayerColour player) : base(turn, player) { }
+        public KillerQueen(int turn, PlayerColour player) : base(turn, player, "Killer Queen"){}
 
-        public override void DrawLarge()
+        public override void DrawSmall(int count)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void DrawSmall()
-        {
-            throw new NotImplementedException();
+            base.DrawSmall(count);
         }
 
         public override bool IsPlayable(Game game)
