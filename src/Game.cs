@@ -17,6 +17,9 @@ namespace MyGame
 
         public Game()
         {
+            HelperFunctions.LoadResources();
+            SwinGame.OpenGraphicsWindow("Secret Technique Chess", 800, 600);
+
             _players = new Dictionary<PlayerColour, Player>();
             foreach (PlayerColour player in Enum.GetValues(typeof(PlayerColour)))
             {
@@ -24,38 +27,42 @@ namespace MyGame
             }
 
             _board = new Board();
-            //_board.Setup();
+            _board.Setup();
 
             _turn = 1;
 
-            _state = GameState.PlayCard;
+            _state = GameState.DoMove;
         }
 
         public void DoMove()
         {
-            Position _newclick = HelperFunctions.PositionClicked ();
-            // _selected = _board.Find (_newclick);
-            Piece _newpiece = _board.Find (_newclick);
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
+            {
+                Position _newclick = HelperFunctions.PositionClicked();
+                string output = _newclick.ToString();
+                SwinGame.DrawText(output, Color.Black, 0, 20);
+                Piece _newpiece = _board.Find(_newclick);
 
 
-            if (_newpiece !=null && _newpiece.Owner == ActivePlayer)
-            {
-                _selected = _newpiece;
-            } 
-            else if (_selected != null && _selected.CanMoveTo (_board, _newclick))
-            {
-                _board.Remove (_newclick);
-                _board.Add (_newclick, _selected);
-                _board.Remove (_selected.Position);
-                _selected.NewPosition(_newclick);
+                if (_newpiece != null && _newpiece.Owner == ActivePlayer)
+                {
+                    _selected = _newpiece;
+                    Console.WriteLine(_selected.Kind);
+                }
+                else if (_selected != null && _selected.CanMoveTo(_board, _newclick))
+                {
+                    _board.Remove(_newclick);
+                    _board.Add(_newclick, _selected);
+                    _board.Remove(_selected.Position);
+                    _selected.NewPosition(_newclick);
+                    _selected = null;
+                    _turn++;
+                }
             }
-
-
         }
 
         public void Play()
         {
-            SwinGame.OpenGraphicsWindow("Secret Technique Chess", 800, 600);
             do
             {
                 SwinGame.ProcessEvents();
@@ -72,6 +79,9 @@ namespace MyGame
                         DoMove();
                         break;
                 }
+                _board.Draw();
+                if (_selected != null) SwinGame.DrawText(_selected.Kind.ToString(), Color.Black, 0, 20);
+                SwinGame.DrawText(ActivePlayer.ToString(), Color.Black, 0, 0);
                 SwinGame.RefreshScreen();
             } while (SwinGame.WindowCloseRequested() == false);
 

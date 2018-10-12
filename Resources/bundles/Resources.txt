@@ -1,0 +1,16 @@
+//
+// This loads all of the resourced used by the splash screen
+//
+BITMAP,BlackBishop,BlackBishop.png
+BITMAP,WhiteBishop,WhiteBishop.png
+BITMAP,BlackKing,BlackKing.png
+BITMAP,WhiteKing,WhiteKing.png
+BITMAP,BlackKnight,BlackKnight.png
+BITMAP,WhiteKnight,WhiteKnight.png
+BITMAP,BlackPawn,BlackPawn.png
+BITMAP,WhitePawn,WhitePawn.png
+BITMAP,BlackQueen,BlackQueen.png
+BITMAP,WhiteQueen,WhiteQueen.png
+BITMAP,BlackRook,BlackRook.png
+BITMAP,WhiteRook,WhiteRook.png
+BITMAP,ChessBoard,ChessBoard.png

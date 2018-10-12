@@ -15,6 +15,7 @@ namespace MyGame
         {
             _hasMoved = false;
             _kind = Kind.Rook;
+            Name += "Rook";
         }
 
         public override bool CanMoveTo (Board board, Position position)

@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SwinGameSDK;
 
 namespace MyGame
 {
     public class Board
     {
         private Dictionary<Position, Piece> _cells;
+        private int _x;
+        private int _y;
+        private double _cellWidth;
 
         public Board()
         {
             _cells = new Dictionary<Position, Piece>();
+            _x = SwinGame.ScreenWidth() - 450;
+            _y = 0;
+            _cellWidth = 56.25;
         }
 
         public void Setup()
@@ -67,5 +74,15 @@ namespace MyGame
             }
             return false;
         }
+
+        public void Draw()
+        {
+            //Console.WriteLine(SwinGame.HasBitmap("ChessBoard"));
+            SwinGame.DrawBitmap("ChessBoard", _x, _y);
+            foreach (KeyValuePair<Position, Piece> position in _cells) position.Value.Draw(this);
+        }
+
+        public int X { get => _x; set => _x = value; }
+        public int Y { get => _y; set => _y = value; }
     }
 }
