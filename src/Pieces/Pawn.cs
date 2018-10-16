@@ -23,7 +23,7 @@ namespace MyGame
             List<int> relativePos = HelperFunctions.GetRelativePosition(Position, position);
             switch (Owner)
             {
-                case PlayerColour.White :
+                case PlayerColour.White:
                     // returns if the position is empty and the correct distance from the pawn
                     if (relativePos[1] <= maxDistance &&
                         relativePos[1] > 0 &&
@@ -45,11 +45,6 @@ namespace MyGame
                     break;
             }
             return false;
-        }
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
         }
 
         public override void NewPosition(Position position)

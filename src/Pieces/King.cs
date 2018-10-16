@@ -25,18 +25,13 @@ namespace MyGame
             return canMove; 
         }
 
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void NewPosition (Position position)
         {
             base.NewPosition (position);
             _hasMoved = true;
         }
 
-        private bool HasMoved
+        public bool HasMoved
         {
             get { return _hasMoved; }
         }

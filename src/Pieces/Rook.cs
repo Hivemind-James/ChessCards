@@ -47,11 +47,6 @@ namespace MyGame
             return canMove;
         }
 
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void NewPosition (Position position)
         {
             base.NewPosition (position);

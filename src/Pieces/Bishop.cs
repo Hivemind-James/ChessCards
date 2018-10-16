@@ -51,10 +51,5 @@ namespace MyGame
             }
             return canMove;
         }
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

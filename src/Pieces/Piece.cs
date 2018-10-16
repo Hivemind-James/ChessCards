@@ -15,7 +15,6 @@ namespace MyGame
         private string _name;
 
         public abstract bool CanMoveTo(Board board, Position position);
-        public abstract Bitmap MoveMap(Board board);
 
         public Piece(Position position, PlayerColour player)
         {
@@ -46,6 +45,18 @@ namespace MyGame
             coords[1] += board.Y;
             //Console.WriteLine(Name + ": " + SwinGame.HasBitmap(Name));
             SwinGame.DrawBitmap(Name, (float)coords[0] + 5, (float)coords[1] + 5);
+        }
+
+        public virtual void MoveMap(Board board)
+        {
+            foreach (Position p in Enum.GetValues(typeof(Position)))
+            {
+                if (CanMoveTo(board, p))
+                {
+                    Point2D point = board.GetPositionLocation(p);
+                    SwinGame.FillRectangle(Color.Red, point.X, point.Y, 58, 58);
+                }
+            }
         }
 
         public Position Position
