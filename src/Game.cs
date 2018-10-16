@@ -14,6 +14,7 @@ namespace MyGame
         private int _turn;
         private GameState _state;
         private Piece _selected;
+        private int _activeCard;
 
         public Game()
         {
@@ -32,6 +33,7 @@ namespace MyGame
             _turn = 1;
 
             _state = GameState.DoMove;
+            _activeCard = 0;
         }
 
         public void DoMove()
@@ -57,6 +59,7 @@ namespace MyGame
                     _selected.NewPosition(_newclick);
                     _selected = null;
                     _turn++;
+                    _state = GameState.PlayCard;
                 }
             }
         }
@@ -79,9 +82,9 @@ namespace MyGame
                         DoMove();
                         break;
                 }
-                _board.Draw();
                 if (_selected != null) SwinGame.DrawText(_selected.Kind.ToString(), Color.Black, 0, 20);
                 SwinGame.DrawText(ActivePlayer.ToString(), Color.Black, 0, 0);
+                Draw();
                 SwinGame.RefreshScreen();
             } while (SwinGame.WindowCloseRequested() == false);
 
@@ -89,7 +92,10 @@ namespace MyGame
 
         public void PlayCard()
         {
-            _players[ActivePlayer].DrawHand();
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
+            {
+                if (_players[ActivePlayer].PlayCard()) _state = GameState.DoMove;
+            }
         }
 
         public void Setup()
@@ -100,9 +106,13 @@ namespace MyGame
         public void Draw()
         {
             //draw background
-            //draw selected  options bitmap (a bitmap overlay for the board that shows possible moves)
+            //draw board
+            //draw moves/card options
             //draw pieces
+            _board.Draw(_selected);
             //draw cards
+            _players[ActivePlayer].DrawHand();
+            SwinGame.FillRectangle(Color.Red, 20, 450, 80, 20);
         }
         public PlayerColour ActivePlayer
         {

@@ -74,11 +74,13 @@ namespace MyGame
     {
         private Kind _target;
         private PlayerColour _enemy;
+        private Position _selection;
 
         public KillPiece(Kind kind, PlayerColour owner, int turn) : base(turn, owner)
         {
             _target = kind;
             _enemy = (owner == PlayerColour.White) ? PlayerColour.Black : PlayerColour.White;
+            _selection = Position.NotAPosition;
         }
 
         public override bool IsPlayable(Game game)
@@ -88,14 +90,12 @@ namespace MyGame
 
         public override void Resolve(Game game)
         {
-            bool _resolving = true;
-            while (_resolving)
+            Position temp;
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                SwinGame.ProcessEvents();
-                if (SwinGame.MouseClicked(MouseButton.LeftButton))
-                {
-                    //Get Position (Input.MousePosition)
-                }
+                temp = HelperFunctions.PositionClicked();
+                if (_selection == temp) game.Board.Remove(_selection);
+                else _selection = temp; 
             }
         }
     }
@@ -184,6 +184,177 @@ namespace MyGame
         }
     }
 
+    public class Fortify : Card
+    {
+        public Fortify(int turn, PlayerColour player) : base(turn, player) { }
+        public override bool IsPlayable(Game game)
+        {
+            //You have at least 1 rook with an empty space next to it
+            throw new NotImplementedException();
+        }
+
+        public override void Resolve(Game game)
+        {
+            //you select an empty space next to a rook you control
+            //a barricade piece is placed in the selected space
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Kagemusha : Card
+    {
+        public Kagemusha(int turn, PlayerColour player) : base(turn, player) { }
+
+        public override bool IsPlayable(Game game)
+        {
+            // you have a king without atleast 1 empty space next to it
+            throw new NotImplementedException();
+        }
+
+        public override void Resolve(Game game)
+        {
+            //player chooses 2 empty spaces next to their king (or the king's space)
+            //The king goes to the first space
+            //a body double is created in the second space
+            throw new NotImplementedException();
+        }
+    }
+
+    public class FourHorsemen : Card
+    {
+        public FourHorsemen(int turn, PlayerColour player) : base(turn, player)
+        { }
+
+        public override bool IsPlayable(Game game)
+        {
+            return  game.Turn >= MinimumTurn &&
+                    game.Board.Count(Kind.Knight, Owner) < 4 &&
+                    game.Board.Count(Owner) > 4;
+        }
+
+        public override void Resolve(Game game)
+        {
+            while (game.Board.Count(Kind.Knight, Owner) < 4)
+            {
+                //promote piece to Knight
+            }
+        }
+    }
+
+    public class Castle : Card
+    {
+        List<Rook> _rooks;
+
+        public Castle(int turn, PlayerColour owner) : base(turn, owner)
+        {
+        }
+
+        public override bool IsPlayable(Game game)
+        {
+            _rooks = new List<Rook>();
+            King king = game.Board.Find(Kind.King, Owner) as King;
+            List<Piece> rooks = game.Board.FindList(Kind.Rook, Owner);
+            if (rooks != null && !king.HasMoved)
+            {
+                foreach (Rook rook in rooks)
+                {
+                    if (!rook.HasMoved && game.Board.IsClear(king.Position, rook.Position))
+                    {
+                        _rooks.Add(rook);
+                    }
+                }
+            }
+            return _rooks.Count > 0 && game.Turn >= MinimumTurn;
+        }
+
+        public override void Resolve(Game game)
+        {
+            //Click which rook to castle with
+            //King is moved 2 spaces towards selected rook
+            //rook is moved to the opposite side of the king
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Sidestep : Card
+    {
+        public Sidestep(int turn, PlayerColour player) : base(turn, player) { }
+
+        public override bool IsPlayable(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Resolve(Game game)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Matricide : Card
+    {
+        public Matricide(int turn, PlayerColour player) : base(turn, player) { }
+
+        public override bool IsPlayable(Game game)
+        {
+            return game.Board.Contains(Kind.Queen, PlayerColour.White) && game.Board.Contains(Kind.Queen, PlayerColour.Black) && game.Turn >= MinimumTurn;
+        }
+
+        public override void Resolve(Game game)
+        {
+            //game.ImportantPiece = Kind.Queen;
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Swap : Card
+    {
+        public Swap(int turn, PlayerColour player) : base(turn, player) { }
+        public override bool IsPlayable(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Resolve(Game game)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class PapalRenunciation : Card
+    {
+        public PapalRenunciation(int turn, PlayerColour player) : base(turn, player) { }
+        public override bool IsPlayable(Game game)
+        {
+            return game.Turn >= MinimumTurn && game.Board.Contains(Kind.Bishop, Owner);
+        }
+
+        public override void Resolve(Game game)
+        {
+            //give the owner a Papal Election card
+            //turn all bishops into Cardinals
+            throw new NotImplementedException();
+        }
+    }
+
+    public class PapalElection : Card
+    {
+        public PapalElection(int turn, PlayerColour player) : base(turn, player) { }
+
+        public override bool IsPlayable(Game game)
+        {
+            return game.Turn >= MinimumTurn; //&&
+            //      game.Board.Count(Kind.Cardinal, Owner) 
+            //      > game.Board.Count(Kind.Cardinal, HelperFunctions.GetOpponent(Owner))
+        }
+
+        public override void Resolve(Game game)
+        {
+            //player selects a cardinal they own, it becomes a pope
+            throw new NotImplementedException();
+        }
+    }
+
     /*******************************************************************************
      *  CARDS TO ADD
      * *****************************************************************************
@@ -192,12 +363,12 @@ namespace MyGame
      *  Fortify         : builds an untakeable blocking piece next to a rook you control
      *  Kagemusha       : allows you to move your king 1 space (or no spaces) then creates a body double that looks and acts like a king piece
      *  Four Horsemen   : promotes a number of units until you have 4 knights
-     *  ???             : promotes all your non-king pieces to body doubles
      *  Castle          : a card each player gets by default, it functions like the castle maneuver from normal chess
      *  Sidestep        : allows you to move any one piece 1 space before you make your move (or at the end of turn for balance if we can make that work)
      *  Matricide       : changes the rules so that the queen is the piece that needs to be taken in order to win
-     *  Divine intervention
-     *                  : switches the position of any piece with a bishop you control (also might need to be at the end of turn for balance)
-     * 
+     *  Swap            : switches the position of any 2 pieces you control (also might need to be at the end of turn for balance)
+     *  PapalRenunciation
+     *                  : promotes all bishops to cardinals and gives user a PapalElection Card
+     *  PapalElection   : if you have more cardinals, one of them becomes a pope
      */
 }
