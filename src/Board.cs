@@ -77,6 +77,18 @@ namespace MyGame
             else return null;
         }
 
+
+        public List<Piece> FindAllPlayerPeices(PlayerColour player)
+        {
+            List<Piece> pieces = new List<Piece>();
+            foreach (KeyValuePair<Position, Piece> piece in _cells)
+            {
+                if (piece.Value.Owner == player) pieces.Add(piece.Value);
+            }
+            if (pieces.Count > 0) return pieces;
+            else return null;
+        }
+
         public Point2D GetPositionLocation(Position position)
         {
             Point2D location = new Point2D();
@@ -152,6 +164,7 @@ namespace MyGame
             return count;
         }
 
+        public Dictionary<Position, Piece> Cells { get => _cells; }
         public int X { get => _x; set => _x = value; }
         public int Y { get => _y; set => _y = value; }
         public float CellWidth { get => _cellWidth; set => _cellWidth = value; }

@@ -137,5 +137,50 @@ namespace MyGame
                 return _board;
             }
         }
+
+        public bool Check()
+        {
+            List<Piece> opponentPieces = new List<Piece>();
+            PlayerColour nonActivePlayer = HelperFunctions.GetOpponent(ActivePlayer);
+            Piece _monarch = _board.Find(Kind.King, ActivePlayer);
+            bool check = false;
+
+            opponentPieces = _board.FindAllPlayerPeices(nonActivePlayer);
+            foreach (Piece p in opponentPieces)
+            {
+                if (p.CanMoveTo(_board, _monarch.Position))
+                {
+                    check = true;
+                }
+            }
+            return check;
+        }
+
+        public bool CheckMate()
+        {
+            List<Piece> pieces = new List<Piece>();
+            pieces = _board.FindAllPlayerPeices(ActivePlayer);
+            bool checkmate = false;
+            int checkcount = 0;
+
+            foreach (Piece p in pieces)
+            {
+                foreach (Position pos in _board.Cells.Keys)
+                {
+                    p.CanMoveTo(_board, pos);
+                    _board.Add(pos, p);
+                    if (Check() == false)
+                    {
+                        checkcount++;
+                    }
+                    _board.Remove(pos);
+                }
+            }
+            if (checkcount == 0)
+            {
+                checkmate = true;
+            }
+            return checkmate;
+        }
     }
 }
