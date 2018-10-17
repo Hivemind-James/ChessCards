@@ -66,6 +66,17 @@ namespace MyGame
             return new NullPiece();
         }
 
+        public List<Piece> FindList(PlayerColour player)
+        {
+            List<Piece> pieces = new List<Piece>();
+            foreach (KeyValuePair<Position, Piece> piece in _cells)
+            {
+                if (piece.Value.Owner == player) pieces.Add(piece.Value);
+            }
+            if (pieces.Count > 0) return pieces;
+            else return null;
+        }
+
         public List<Piece> FindList(Kind kind, PlayerColour player)
         {
             List<Piece> pieces = new List<Piece>();
@@ -75,6 +86,20 @@ namespace MyGame
             }
             if (pieces.Count > 0) return pieces;
             else return null;
+        }
+
+        public List<Position> GetPlayerCoverage(PlayerColour player)
+        {
+            List<Position> coverage = new List<Position>();
+            List<Piece> pieces = FindList(player);
+            foreach (Piece p in pieces)
+            {
+                    foreach (Position pos in Enum.GetValues(typeof(Position)))
+                    {
+                        if (p.CanMoveTo(this, pos)) coverage.Add(pos);
+                    }
+            }
+            return coverage;
         }
 
         public Point2D GetPositionLocation(Position position)
