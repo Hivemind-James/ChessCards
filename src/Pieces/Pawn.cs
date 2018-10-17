@@ -15,6 +15,7 @@ namespace MyGame
         public Pawn(Position position, PlayerColour player) : base (position, player)
         {
             _kind = Kind.Pawn;
+            Name += "Pawn";
         }
         public override bool CanMoveTo(Board board, Position position)
         {
@@ -22,7 +23,7 @@ namespace MyGame
             List<int> relativePos = HelperFunctions.GetRelativePosition(Position, position);
             switch (Owner)
             {
-                case PlayerColour.White :
+                case PlayerColour.White:
                     // returns if the position is empty and the correct distance from the pawn
                     if (relativePos[1] <= maxDistance &&
                         relativePos[1] > 0 &&
@@ -34,7 +35,7 @@ namespace MyGame
                         board.Find(position).Owner == PlayerColour.Black) return true;
                     break;
                 case PlayerColour.Black:
-                    if (relativePos[1] <= -maxDistance &&
+                    if (relativePos[1] >= -maxDistance &&
                         relativePos[1] < 0 &&
                         relativePos[0] == 0 &&
                         board.Find(position).Owner == PlayerColour.NoOwner) return true;
@@ -44,11 +45,6 @@ namespace MyGame
                     break;
             }
             return false;
-        }
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
         }
 
         public override void NewPosition(Position position)

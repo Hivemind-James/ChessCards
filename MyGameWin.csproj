@@ -35,7 +35,11 @@
   <PropertyGroup>
     <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyLibsToOut</PrepareForRunDependsOn>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\bundles\Resources.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Board.cs" />
     <Compile Include="src\Cards\Card.cs" />

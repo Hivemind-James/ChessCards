@@ -15,6 +15,7 @@ namespace MyGame
         {
             _hasMoved = false;
             _kind = Kind.Rook;
+            Name += "Rook";
         }
 
         public override bool CanMoveTo (Board board, Position position)
@@ -44,11 +45,6 @@ namespace MyGame
                 }
             }
             return canMove;
-        }
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
         }
 
         public override void NewPosition (Position position)

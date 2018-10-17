@@ -14,51 +14,62 @@ namespace MyGame
         private int _turn;
         private GameState _state;
         private Piece _selected;
+        private int _activeCard;
 
         public Game()
         {
+            HelperFunctions.LoadResources();
+            SwinGame.OpenGraphicsWindow("Secret Technique Chess", 800, 600);
+
             _players = new Dictionary<PlayerColour, Player>();
             foreach (PlayerColour player in Enum.GetValues(typeof(PlayerColour)))
             {
-                //_players.Add(player, new Player(player));
+                _players.Add(player, new Player(player));
             }
 
             _board = new Board();
-            //_board.Setup();
+            _board.Setup();
 
             _turn = 1;
 
-            _state = GameState.Setup;
+            _state = GameState.DoMove;
+            _activeCard = 0;
         }
 
         public void DoMove()
         {
-            Position _newclick = HelperFunctions.PositionClicked ();
-            // _selected = _board.Find (_newclick);
-            Piece _newpiece = _board.Find (_newclick);
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
+            {
+                Position _newclick = HelperFunctions.PositionClicked();
+                string output = _newclick.ToString();
+                SwinGame.DrawText(output, Color.Black, 0, 20);
+                Piece _newpiece = _board.Find(_newclick);
 
 
-            if (_newpiece !=null && _newpiece.Owner == ActivePlayer)
-            {
-                _selected = _newpiece;
-            } 
-            else if (_selected != null && _selected.CanMoveTo (_board, _newclick))
-            {
-                _board.Remove (_newclick);
-                _board.Add (_newclick, _selected);
-                _board.Remove (_selected.Position);
-                _selected.NewPosition(_newclick);
+                if (_newpiece != null && _newpiece.Owner == ActivePlayer)
+                {
+                    _selected = _newpiece;
+                    Console.WriteLine(_selected.Kind);
+                }
+                else if (_selected != null && _selected.CanMoveTo(_board, _newclick))
+                {
+                    _board.Remove(_newclick);
+                    _board.Add(_newclick, _selected);
+                    _board.Remove(_selected.Position);
+                    _selected.NewPosition(_newclick);
+                    _selected = null;
+                    _turn++;
+                    _state = GameState.PlayCard;
+                }
             }
-
-
         }
 
         public void Play()
         {
-            SwinGame.OpenGraphicsWindow("Secret Technique Chess", 800, 600);
             do
             {
                 SwinGame.ProcessEvents();
+                SwinGame.ClearScreen(Color.White);
                 switch (_state)
                 {
                     case GameState.Setup:
@@ -71,14 +82,20 @@ namespace MyGame
                         DoMove();
                         break;
                 }
-                SwinGame.RefreshScreen(60);
+                if (_selected != null) SwinGame.DrawText(_selected.Kind.ToString(), Color.Black, 0, 20);
+                SwinGame.DrawText(ActivePlayer.ToString(), Color.Black, 0, 0);
+                Draw();
+                SwinGame.RefreshScreen();
             } while (SwinGame.WindowCloseRequested() == false);
 
         }
 
         public void PlayCard()
         {
-            throw new NotImplementedException();
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
+            {
+                if (_players[ActivePlayer].PlayCard()) _state = GameState.DoMove;
+            }
         }
 
         public void Setup()
@@ -89,9 +106,13 @@ namespace MyGame
         public void Draw()
         {
             //draw background
-            //draw selected  options bitmap (a bitmap overlay for the board that shows possible moves)
+            //draw board
+            //draw moves/card options
             //draw pieces
+            _board.Draw(_selected);
             //draw cards
+            _players[ActivePlayer].DrawHand();
+            SwinGame.FillRectangle(Color.Red, 20, 450, 80, 20);
         }
         public PlayerColour ActivePlayer
         {

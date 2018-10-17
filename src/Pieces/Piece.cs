@@ -12,14 +12,15 @@ namespace MyGame
         protected Kind _kind;
         private PlayerColour _owner;
         private Position _position;
+        private string _name;
 
         public abstract bool CanMoveTo(Board board, Position position);
-        public abstract Bitmap MoveMap(Board board);
 
         public Piece(Position position, PlayerColour player)
         {
             _position = position;
             _owner = player;
+            _name = (player == PlayerColour.White) ? "White" : "Black";
         }
 
         public virtual void NewPosition(Position position)
@@ -31,6 +32,31 @@ namespace MyGame
         public override string ToString()
         {
             return Position.ToString() + ": " + Owner.ToString() + " " + Kind.ToString() + "\n";
+        }
+
+        public virtual void Draw(Board board)
+        {
+            List<double> coords = new List<double>();
+            foreach (int i in HelperFunctions.GetAbsPos(Position)) coords.Add(i);
+            coords[1] = 7 - coords[1];
+            coords[0] *= 56.25;
+            coords[0] += board.X;
+            coords[1] *= 56.25;
+            coords[1] += board.Y;
+            //Console.WriteLine(Name + ": " + SwinGame.HasBitmap(Name));
+            SwinGame.DrawBitmap(Name, (float)coords[0] + 5, (float)coords[1] + 5);
+        }
+
+        public virtual void MoveMap(Board board)
+        {
+            foreach (Position p in Enum.GetValues(typeof(Position)))
+            {
+                if (CanMoveTo(board, p))
+                {
+                    Point2D point = board.GetPositionLocation(p);
+                    SwinGame.FillRectangle(Color.Red, point.X, point.Y, 58, 58);
+                }
+            }
         }
 
         public Position Position
@@ -54,5 +80,7 @@ namespace MyGame
                 return _owner;
             }
         }
+
+        public string Name { get => _name; set => _name = value; }
     }
 }

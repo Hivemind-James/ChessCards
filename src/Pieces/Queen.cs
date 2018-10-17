@@ -12,6 +12,7 @@ namespace MyGame
         public Queen(Position position, PlayerColour player) : base(position, player)
         {
             _kind = Kind.Queen;
+            Name += "Queen";
         }
 
         public override bool CanMoveTo(Board board, Position position)
@@ -50,12 +51,6 @@ namespace MyGame
                 }
             }
             return canMove;
-        }
-
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
         }
     }
 }

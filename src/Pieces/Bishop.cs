@@ -12,6 +12,7 @@ namespace MyGame
         public Bishop(Position position, PlayerColour player) : base(position, player)
         {
             _kind = Kind.Bishop;
+            Name += "Bishop";
         }
 
         public override bool CanMoveTo(Board board, Position position)
@@ -49,11 +50,6 @@ namespace MyGame
                 }
             }
             return canMove;
-        }
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
         }
     }
 }

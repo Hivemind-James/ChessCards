@@ -17,10 +17,5 @@ namespace MyGame
         {
             return false;
         }
-
-        public override Bitmap MoveMap(Board board)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

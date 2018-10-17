@@ -9,6 +9,21 @@ namespace MyGame
 {
     public static class HelperFunctions
     {
+        public static void LoadResources()
+        {
+            SwinGame.LoadBitmapNamed("ChessBoard", "ChessBoard.png");
+            string[] colors = { "Black", "White" };
+            string[] kind = { "Pawn", "King", "Queen", "Knight", "Bishop", "Rook" };
+            foreach (string c in colors)
+            {
+                foreach (string k in kind)
+                {
+                   // Console.WriteLine("loading:");
+                    SwinGame.LoadBitmapNamed(c + k, c + k + ".png");
+                   // Console.WriteLine(c + k + ": " + SwinGame.HasBitmap(c + k));
+                }
+            }
+        }
         //This function returns a list of integers (the first element being x and the second y).
         //The function is used in the Piece Child classes to help determine is a move is legal
         public static List<int> GetRelativePosition(Position origin, Position end)
@@ -43,9 +58,9 @@ namespace MyGame
             mouse = SwinGame.MousePosition ();
             int row = 0;
             int column = 0;
-            row = 7 - Convert.ToInt32 (Math.Floor ((mouse.Y - 0) / (56.25 + 0)));
-            column = Convert.ToInt32 (Math.Floor ((mouse.X + (SwinGame.ScreenWidth () - 450) / (56.25 + 0))));
-            return (Position)(column * 8 + row);
+            row = 7 - Convert.ToInt32 (Math.Floor (mouse.Y / 56.25));
+            column = Convert.ToInt32 (Math.Floor ((mouse.X - 350) / 56.25));
+            return (Position)((8 * row) + column);
 
         }
 
