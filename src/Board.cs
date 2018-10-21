@@ -17,7 +17,7 @@ namespace MyGame
         public Board()
         {
             _cells = new Dictionary<Position, Piece>();
-            _x = SwinGame.ScreenWidth() - 450;
+            _x = 350;
             _y = 0;
             _cellWidth = 56.25f;
         }
