@@ -54,7 +54,7 @@ namespace MyGame
                 if (CanMoveTo(board, p))
                 {
                     Point2D point = board.GetPositionLocation(p);
-                    SwinGame.FillRectangle(Color.Red, point.X, point.Y, 58, 58);
+                    SwinGame.FillRectangle(Color.Green, point.X, point.Y, 58, 58);
                 }
             }
         }
