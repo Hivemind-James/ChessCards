@@ -15,6 +15,7 @@ namespace MyGame
         private GameState _state;
         private Piece _selected;
         private Card _activeCard;
+        private Kind _monarch;
 
         public Game()
         {
@@ -146,6 +147,12 @@ namespace MyGame
             {
                 return _board;
             }
+        }
+
+        public Kind Monarch
+        {
+            get { return _monarch; }
+            set { _monarch = value; }
         }
 
         public bool Check()

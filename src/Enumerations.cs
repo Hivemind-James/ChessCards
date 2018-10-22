@@ -22,6 +22,7 @@ namespace MyGame
 
     public enum Kind
     {
+        NullPiece,
         Pawn,
         Rook,
         Knight,

@@ -25,13 +25,13 @@ namespace MyGame
                 case 4:
                     return new FourHorsemen(p);
                 case 5:
-                    return new KillPiece(p, r);
+                   // return new KillPiece(p, r);
                 case 6:
-                    return new Promote(p, r);
+                    //return new Promote(p, r);
                 case 7:
-                    return new Recruit(p, r);
+                    //return new Recruit(p, r);
                 case 8:
-                    return new Demote(p, r);
+                    //return new Demote(p, r);
                     break;
             }
             return null;

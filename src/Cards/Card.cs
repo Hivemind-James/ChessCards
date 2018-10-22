@@ -45,6 +45,7 @@ namespace MyGame
         public virtual void DrawLarge(int x, int y)
         {
             SwinGame.DrawRectangle(Color.Black, x, y, _largeWidth, _largeHeight);
+            SwinGame.DrawText(Description, Color.Black, x, y + 30);
         }
         //public virtual void DrawOptions() { };
         public int MinimumTurn
@@ -67,6 +68,12 @@ namespace MyGame
         {
             get { return _name; }
             set { _name = value; }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
         }
     }
 
@@ -162,7 +169,7 @@ namespace MyGame
 
     public class KillerQueen : Card
     {
-        public KillerQueen(int turn, PlayerColour player) : base(turn, player, "Killer Queen"){}
+        public KillerQueen(PlayerColour player) : base(20, player, "Killer Queen"){}
 
         public override void DrawSmall(int count)
         {
@@ -181,7 +188,27 @@ namespace MyGame
 
         public override bool Resolve(Game game)
         {
-            return false;
+            Position _click = HelperFunctions.PositionClicked();
+            Piece queen = game.Board.Find(_click);
+            bool result = false;
+            int i;
+            int j;
+            if (queen.Kind == Kind.Queen && queen.Owner == Owner)
+            {
+                for (i = -1; i < 2; i++)
+                {
+                    for (j = -1; j < 2; j++)
+                    {
+                        if (!(i == 0 && j == 0))
+                        {
+                            Position kill = HelperFunctions.GetNewPosition(queen.Position, i, j);
+                            game.Board.Remove(kill);
+                            result = true;
+                        }
+                    }
+                }
+            }
+            return result;
         }
     }
 
@@ -223,8 +250,10 @@ namespace MyGame
 
     public class FourHorsemen : Card
     {
-        public FourHorsemen(int turn, PlayerColour player) : base(turn, player)
-        { }
+        public FourHorsemen(PlayerColour player) : base(30, player)
+        {
+            Description = "Allows you to promote units to knights as long as you have less than 4, click each unit to upgrade";
+        }
 
         public override bool IsPlayable(Game game)
         {
@@ -237,7 +266,13 @@ namespace MyGame
         {
             while (game.Board.Count(Kind.Knight, Owner) < 4)
             {
-                //promote piece to Knight
+                Position _click = HelperFunctions.PositionClicked();
+                Piece first = game.Board.Find(_click);
+                if (first.Owner == Owner)
+                {
+                    game.Board.Remove(_click);
+                    game.Board.Add(_click, new Knight(_click, Owner));
+                }
             }
             return false;
         }
@@ -247,7 +282,7 @@ namespace MyGame
     {
         List<Rook> _rooks;
 
-        public Castle(int turn, PlayerColour owner) : base(turn, owner)
+        public Castle(PlayerColour owner) : base(0, owner)
         {
         }
 
@@ -280,22 +315,41 @@ namespace MyGame
 
     public class Sidestep : Card
     {
-        public Sidestep(int turn, PlayerColour player) : base(turn, player) { }
+        public Sidestep(PlayerColour player) : base(5, player)
+        {
+            Description = "You May Move 1 Piece You Own To A Adjacent Square";
+        }
 
         public override bool IsPlayable(Game game)
         {
-            return false;
+            if (game.Turn < MinimumTurn) return false;
+            else { return true; }
+
         }
 
         public override bool Resolve(Game game)
         {
-            return false;
+            bool result = false;
+            Position _firstclick = HelperFunctions.PositionClicked();
+            Position _secondclick = HelperFunctions.PositionClicked();
+            Piece first = game.Board.Find(_firstclick);
+            if ((game.Board.Find(_secondclick).Kind == Kind.NullPiece) && (game.Board.Find(_firstclick).Owner == Owner))
+            {
+                game.Board.Remove(_firstclick);
+                game.Board.Add(_secondclick, first);
+                first.NewPosition(_secondclick);
+                result = true;
+            }
+            return result;
         }
     }
 
     public class Matricide : Card
     {
-        public Matricide(int turn, PlayerColour player) : base(turn, player) { }
+        public Matricide(PlayerColour player) : base(20, player)
+        {
+            Description = "This card makes it so you need to check/checkmate the queen";
+        }
 
         public override bool IsPlayable(Game game)
         {
@@ -304,22 +358,43 @@ namespace MyGame
 
         public override bool Resolve(Game game)
         {
-            //game.ImportantPiece = Kind.Queen;
+            game.Monarch = Kind.Queen;
             return false;
         }
     }
 
     public class Swap : Card
     {
-        public Swap(int turn, PlayerColour player) : base(turn, player) { }
+        public Swap(PlayerColour player) : base(10, player)
+        {
+            Description = "Swap Allows You To Swap The Positions Of Two Pieces You Control";
+        }
         public override bool IsPlayable(Game game)
         {
-            return false;
+            if (game.Turn < MinimumTurn) return false;
+            else { return true; }
         }
 
         public override bool Resolve(Game game)
         {
-            return false;
+
+            bool result = false;
+            Position _newclick = HelperFunctions.PositionClicked();
+            Position _secondclick = HelperFunctions.PositionClicked();
+            Piece first = game.Board.Find(_newclick);
+            Piece second = game.Board.Find(_secondclick);
+            if (first.Owner == second.Owner)
+            {
+                game.Board.Remove(_newclick);
+                game.Board.Remove(_secondclick);
+                game.Board.Add(_newclick, second);
+                game.Board.Add(_secondclick, first);
+                first.NewPosition(_secondclick);
+                second.NewPosition(_newclick);
+                result = true;
+            }
+            return result;
+
         }
     }
 
