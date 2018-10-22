@@ -14,7 +14,7 @@ namespace MyGame
         {
             switch (r.Next(9))
             {
-                case 0:
+                /*case 0:
                     return new KillerQueen(p);
                 case 1:
                     return new Swap(p);
@@ -31,7 +31,7 @@ namespace MyGame
                 case 7:
                     return new Recruit(p, r);
                 case 8:
-                    return new Demote(p, r);
+                    return new Demote(p, r);*/
 
             }
             return null;

@@ -66,6 +66,15 @@ namespace MyGame
             return new NullPiece();
         }
 
+        public Position BoardPosition(Kind kind, PlayerColour player)
+        {
+            foreach (KeyValuePair<Position, Piece> piece in _cells)
+            {
+                if (piece.Value.Owner == player && piece.Value.Kind == kind) return piece.Key;
+            }
+            return Position.NotAPosition;
+        }
+
         public List<Piece> FindList(Kind kind, PlayerColour player)
         {
             List<Piece> pieces = new List<Piece>();
@@ -78,7 +87,7 @@ namespace MyGame
         }
 
 
-        public List<Piece> FindAllPlayerPeices(PlayerColour player)
+        public List<Piece> FindAllPlayerPieces(PlayerColour player)
         {
             List<Piece> pieces = new List<Piece>();
             foreach (KeyValuePair<Position, Piece> piece in _cells)

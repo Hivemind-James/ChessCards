@@ -16,7 +16,7 @@ namespace MyGame
         public Player(PlayerColour player)
         {
             _hand = new List<Card>();
-            _hand.Add(new Castle(_playerColour));
+            //_hand.Add(new Castle(_playerColour));
 
             _selected = null;
 
@@ -43,8 +43,9 @@ namespace MyGame
                 {
                     _selected.DrawLarge(0, 0);
                 }
-                SwinGame.DrawRectangle(Color.Black, 50, 400, 150, 50);
-                SwinGame.DrawText("Skip to Move", Color.Black, 50, 400);            }
+            }
+            SwinGame.DrawRectangle(Color.Black, 50, 400, 150, 50);
+            SwinGame.DrawText("Skip to Move", Color.Black, 50, 400);
         }
 
         public bool PlayCard(Game game)
