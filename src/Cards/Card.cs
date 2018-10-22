@@ -21,6 +21,8 @@ namespace MyGame
         protected float _largeWidth;
         protected float _largeHeight;
 
+        protected Rectangle _boundingbox;
+
        
         public Card(int turn, PlayerColour player, string name) : this (turn, player)
         {
@@ -36,6 +38,8 @@ namespace MyGame
             _smallHeight = 120;
             _largeWidth = 250;
             _largeHeight = 350;
+
+            _boundingbox = new Rectangle();
         }
 
         public Card(PlayerColour player) : this (0, player)
@@ -45,8 +49,12 @@ namespace MyGame
         public abstract bool Resolve(Game game);
         public virtual void DrawSmall(int count)
         {
-            SwinGame.DrawRectangle(Color.Black, (count * _smallWidth), SwinGame.ScreenHeight() - _smallHeight, _smallWidth, _smallHeight);
-            SwinGame.DrawText(_name, Color.Black, (count * _smallWidth), SwinGame.ScreenHeight() - _smallHeight);
+            _boundingbox.X = count * _smallWidth;
+            _boundingbox.Y = SwinGame.ScreenHeight() - _smallHeight;
+            _boundingbox.Width = _smallWidth;
+            _boundingbox.Height = _smallHeight;
+            SwinGame.DrawRectangle(Color.Black, _boundingbox);
+            SwinGame.DrawText(_name, Color.Black, Color.White, "text", FontAlignment.AlignCenter, _boundingbox);
         }
         public virtual void DrawLarge(int x, int y)
         {

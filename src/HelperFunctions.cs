@@ -23,7 +23,7 @@ namespace MyGame
                    // Console.WriteLine(c + k + ": " + SwinGame.HasBitmap(c + k));
                 }
             }
-            SwinGame.LoadFont("cour.ttf", 12);
+            SwinGame.LoadFontNamed("text","cour.ttf", 12);
         }
         //This function returns a list of integers (the first element being x and the second y).
         //The function is used in the Piece Child classes to help determine is a move is legal
