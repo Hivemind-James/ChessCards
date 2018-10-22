@@ -77,7 +77,7 @@ namespace MyGame
                     if (CheckMate(HelperFunctions.GetOpponent(ActivePlayer)))
                     {
                         //ActivePlayer Wins
-                        Console.WriteLine(ActivePlayer.ToString() + " player wins");
+                        DisplayWinner(ActivePlayer);
                     }
                 }
             }
@@ -109,8 +109,6 @@ namespace MyGame
                         DoMove();
                         break;
                 }
-                if (_selected != null) SwinGame.DrawText(_selected.Kind.ToString(), Color.Black, 0, 20);
-                SwinGame.DrawText(ActivePlayer.ToString(), Color.Black, 0, 0);
                 Draw();
                 SwinGame.RefreshScreen();
             } while (SwinGame.WindowCloseRequested() == false);
@@ -146,7 +144,14 @@ namespace MyGame
             _board.Draw(_selected);
             //draw cards
             _players[ActivePlayer].DrawHand();
+            SwinGame.FillRectangle(Color.Gray, 50, 460, 150, 50);
+            SwinGame.DrawRectangle(Color.Black, 50, 460, 150, 50);
+            SwinGame.DrawText("Concede", Color.Black, 50, 460);
+            string stateString = (_state == GameState.DoMove) ? ": Move a piece" : ": Play a card";
+            stateString = ActivePlayer.ToString() + stateString;
+            SwinGame.DrawText(stateString, Color.Black, 0, 0);
         }
+
         public PlayerColour ActivePlayer
         {
             get
