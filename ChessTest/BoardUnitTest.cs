@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MyGame
 {
     [TestClass]
-    public class BoardTest
+    public class BoardUnitTest
     {
         Board _board;
 
@@ -15,7 +15,7 @@ namespace MyGame
             _board.Setup();
         }
         [TestMethod]
-        public void BoardSetup_Week8()
+        public void BoardSetup()
         {
             string expected =   "A1: White Rook\n" +
                                 "A2: White Knight\n" +
@@ -54,13 +54,13 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void EmptyCell_Week8()
+        public void EmptyCell()
         {
             Assert.IsTrue(_board.Find(Position.C1).Owner == PlayerColour.NoOwner);
         }
 
         [TestMethod]
-        public void FullCell_Week8()
+        public void FullCell()
         {
             string expected = "A1: White Rook\n";
             string actual = _board.Find(Position.A1).ToString();

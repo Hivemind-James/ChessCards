@@ -11,6 +11,8 @@ namespace MyGame
     {
         public NullPiece() : base(Position.NotAPosition, PlayerColour.NoOwner)
         {
+            _kind = Kind.NullPiece;
+            
         }
 
         public override bool CanMoveTo(Board board, Position position)
