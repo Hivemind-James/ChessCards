@@ -318,7 +318,7 @@ namespace MyGame
         {
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                if (game.Board.Count(Kind.Knight, Owner) < 4)
+                if (game.Board.Count(Kind.Knight, Owner) < 5)
                 {
                     Position _click = HelperFunctions.PositionClicked();
                     Piece first = game.Board.Find(_click);
