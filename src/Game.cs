@@ -33,7 +33,7 @@ namespace MyGame
 
             _turn = 1;
 
-            _state = GameState.PlayCard;
+            _state = GameState.Setup;
             _activeCard = null;
 
             _monarch = Kind.King;
@@ -125,14 +125,15 @@ namespace MyGame
 
         public void Setup()
         {
+            Random r = new Random();
             foreach (KeyValuePair<PlayerColour, Player> p in _players)
             {
                 while (p.Value.HandSize < 10) // Don't know why It's doing this: Operator < cannot be applied to method groups and int.
                 {
-                    Random r = new Random();
                     p.Value.AddCard(r);
                 }
             }
+            _state = GameState.PlayCard;
         }
 
         public void Draw()
