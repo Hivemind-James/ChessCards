@@ -51,8 +51,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardTest.cs" />
-    <Compile Include="PieceFunctionTests.cs" />
+    <Compile Include="BoardUnitTest.cs" />
+    <Compile Include="PieceFunctionalityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HelperFunctionUnitTests.cs" />
     <Compile Include="PieceUnitTests.cs" />

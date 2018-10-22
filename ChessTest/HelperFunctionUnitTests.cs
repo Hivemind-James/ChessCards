@@ -12,7 +12,7 @@ namespace MyGame
     public class HelperFunctionUnitTests
     {
         [TestMethod]
-        public void GetRelativePositions_ChecksDifferenceBetweenPositions_Same()
+        public void GetRelativePositions()
         {
             List<int> output;
             List<int> expected = new List<int>();
@@ -24,7 +24,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void GetNewPosition_GetsNewPosition_Position()
+        public void GetNewPosition()
         {
             List<int> deltaP;
             Position output;
@@ -35,7 +35,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void GetAbsPosition_ReturnsNumericalPosition_True()
+        public void GetAbsPosition()
         {
             List<int> deltaP = new List<int>();
             List<int> output;
@@ -48,7 +48,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void GetOpponent_ReturnsActivePlayersOpponent_NonActivePlayer()
+        public void GetOpponent()
         {
             PlayerColour expected;
             expected = PlayerColour.Black;
@@ -57,7 +57,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void Setup_ReturnsPositionsOfPeicesDuringSetup_Pawn()
+        public void Setup()
         {
             Piece expected = new Pawn(Position.B1, PlayerColour.White);
 

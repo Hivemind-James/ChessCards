@@ -3,7 +3,7 @@
 namespace MyGame
 { 
     [TestClass]
-    public class PieceTests_NotUnitTests
+    public class PieceFunctionalityTests
     { 
         Board _board;
         

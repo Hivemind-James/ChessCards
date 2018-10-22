@@ -22,7 +22,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void CanMoveTo_RookCanMoveToLocations_False()
+        public void CanMoveToRook()
         {
             Piece selected = _board.Find(Position.A1);
 
@@ -30,7 +30,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void CanMoveTo_QueenCanMoveToLocations_False()
+        public void CanMoveToQueen()
         {
             Piece selected = _board.Find(Position.A4);
 
@@ -38,7 +38,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void ToString_PiecetoStringEqualsStringOutput_Equal()
+        public void ToStringPiece()
         {
             Piece selected = _board.Find(Position.A1);
             string expected = "A1: White Rook\n";
@@ -48,7 +48,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void CanMoveTo_PawnCanMoveToLocations_True()
+        public void CanMoveToPawn()
         {
             Piece selected = _board.Find(Position.B1);
 
@@ -57,7 +57,7 @@ namespace MyGame
 
 
         [TestMethod]
-        public void CanMoveTo_NullPieceCanMoveToLocations_False()
+        public void CanMoveToNull()
         {
             Piece notapiece = new NullPiece();
 
@@ -66,7 +66,7 @@ namespace MyGame
 
 
                     [TestMethod]
-        public void CanMoveTo_KnightCanMoveToLocations_False()
+        public void CanMoveToKnight()
         {
             Piece selected = _board.Find(Position.A3);
 
@@ -74,7 +74,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void CanMoveTo_KingCanMoveToLocations_False()
+        public void CanMoveToKing()
         {
             Piece selected = _board.Find(Position.A5);
 
@@ -82,7 +82,7 @@ namespace MyGame
         }
 
         [TestMethod]
-        public void CanMoveTo_BishopCanMoveToLocations_False()
+        public void CanMoveToBishop()
         {
             Piece selected = _board.Find(Position.A2);
 
