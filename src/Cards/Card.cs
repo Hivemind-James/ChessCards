@@ -316,14 +316,20 @@ namespace MyGame
 
         public override bool Resolve(Game game)
         {
-            if (game.Board.Count(Kind.Knight, Owner) < 4)
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                Position _click = HelperFunctions.PositionClicked();
-                Piece first = game.Board.Find(_click);
-                if (first.Owner == Owner && first.Kind < Kind.Queen && first.Kind > 0 && IsPlayable(game))
+                if (game.Board.Count(Kind.Knight, Owner) < 4)
                 {
-                    game.Board.Remove(_click);
-                    game.Board.Add(_click, new Knight(_click, Owner));
+                    Position _click = HelperFunctions.PositionClicked();
+                    Piece first = game.Board.Find(_click);
+                    if (first.Owner == Owner && first.Kind < Kind.Queen && first.Kind > 0 && IsPlayable(game) && !_used)
+                    {
+                        game.Board.Remove(_click);
+                        game.Board.Add(_click, new Knight(_click, Owner));
+                        _used = true;
+                        return true;
+
+                    }
                 }
             }
             return false;
