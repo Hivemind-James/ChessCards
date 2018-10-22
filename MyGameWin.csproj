@@ -43,6 +43,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\CardGenerator.cs" />
     <Compile Include="src\Board.cs" />
     <Compile Include="src\Cards\Card.cs" />
     <Compile Include="src\Enumerations.cs" />

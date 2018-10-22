@@ -11,13 +11,27 @@ namespace MyGame
     {
         private List<Card> _hand;
         private Card _selected;
+        private PlayerColour _playerColour;
 
         public Player(PlayerColour player)
         {
             _hand = new List<Card>();
-            Card card = new KillerQueen(1, player);
-            for (int i = 0; i < 10; i++) _hand.Add(card);
+            _hand.Add(new Castle(_playerColour));
+
             _selected = null;
+
+            _playerColour = player;
+        }
+
+        public int HandSize
+        {
+            get { return _hand.Count; }
+        } 
+
+        public void AddCard(Random r)
+        {
+
+            _hand.Add(CardGenerator.GenerateCard(r, _playerColour));
         }
 
         public void DrawHand()
