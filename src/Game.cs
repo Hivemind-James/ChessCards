@@ -36,16 +36,18 @@ namespace MyGame
             _state = GameState.PlayCard;
             _activeCard = null;
 
+            _monarch = Kind.King;
+
         }
 
         public void DoMove()
         {
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                Position _newclick = HelperFunctions.PositionClicked();
-                string output = _newclick.ToString();
+                Position _newClick = HelperFunctions.PositionClicked();
+                string output = _newClick.ToString();
                 SwinGame.DrawText(output, Color.Black, 0, 20);
-                Piece _newpiece = _board.Find(_newclick);
+                Piece _newpiece = _board.Find(_newClick);
 
 
                 if (_newpiece != null && _newpiece.Owner == ActivePlayer)
@@ -53,15 +55,30 @@ namespace MyGame
                     _selected = _newpiece;
                     Console.WriteLine(_selected.Kind);
                 }
-                else if (_selected != null && _selected.CanMoveTo(_board, _newclick))
+                else if (_selected != null && _selected.CanMoveTo(_board, _newClick))
                 {
-                    _board.Remove(_newclick);
-                    _board.Add(_newclick, _selected);
+                    Piece target = _board.Find(_newClick);
+                    _board.Remove(_newClick);
+                    _board.Add(_newClick, _selected);
                     _board.Remove(_selected.Position);
-                    _selected.NewPosition(_newclick);
-                    _selected = null;
-                    _turn++;
-                    _state = GameState.PlayCard;
+                    if (!Check(ActivePlayer))
+                    {
+                        _selected.NewPosition(_newClick);
+                        _selected = null;
+                        _turn++;
+                        _state = GameState.PlayCard;
+                    }
+                    else
+                    {
+                        _board.Remove(_newClick);
+                        _board.Add(_selected.Position, _selected);
+                        _board.Add(_newClick, target);
+                    }
+                    if (CheckMate(HelperFunctions.GetOpponent(ActivePlayer)))
+                    {
+                        //ActivePlayer Wins
+                        DisplayWinner(ActivePlayer);
+                    }
                 }
             }
         }
@@ -72,6 +89,14 @@ namespace MyGame
             {
                 SwinGame.ProcessEvents();
                 SwinGame.ClearScreen(Color.White);
+                if (SwinGame.MouseClicked(MouseButton.LeftButton))
+                {
+                    if (SwinGame.PointInRect(SwinGame.MousePosition(), 50, 460, 150, 50))
+                    {
+                        DisplayWinner(HelperFunctions.GetOpponent(ActivePlayer));
+                        break;
+                    }
+                }
                 switch (_state)
                 {
                     case GameState.Setup:
@@ -84,8 +109,6 @@ namespace MyGame
                         DoMove();
                         break;
                 }
-                if (_selected != null) SwinGame.DrawText(_selected.Kind.ToString(), Color.Black, 0, 20);
-                SwinGame.DrawText(ActivePlayer.ToString(), Color.Black, 0, 0);
                 Draw();
                 SwinGame.RefreshScreen();
             } while (SwinGame.WindowCloseRequested() == false);
@@ -108,11 +131,8 @@ namespace MyGame
                 {
                     Random r = new Random();
                     p.Value.AddCard(r);
-
                 }
-
             }
-
         }
 
         public void Draw()
@@ -124,7 +144,15 @@ namespace MyGame
             _board.Draw(_selected);
             //draw cards
             _players[ActivePlayer].DrawHand();
+            SwinGame.FillRectangle(Color.Gray, 50, 460, 150, 50);
+            SwinGame.DrawRectangle(Color.Black, 50, 460, 150, 50);
+            SwinGame.DrawText("Concede", Color.Black, 50, 460);
+            string stateString = (_state == GameState.DoMove) ? ": Move a piece" : ": Play a card";
+            stateString = ActivePlayer.ToString() + stateString;
+            SwinGame.DrawText(stateString, Color.Black, 0, 0);
         }
+
+
         public PlayerColour ActivePlayer
         {
             get
@@ -155,17 +183,17 @@ namespace MyGame
             set { _monarch = value; }
         }
 
-        public bool Check()
+        public bool Check(PlayerColour target)
         {
             List<Piece> opponentPieces = new List<Piece>();
-            PlayerColour nonActivePlayer = HelperFunctions.GetOpponent(ActivePlayer);
-            Piece _monarch = _board.Find(Kind.King, ActivePlayer);
+            PlayerColour nonActivePlayer = HelperFunctions.GetOpponent(target);
+            Position monarch = _board.BoardPosition(_monarch, target);
             bool check = false;
 
-            opponentPieces = _board.FindAllPlayerPeices(nonActivePlayer);
+            opponentPieces = _board.FindAllPlayerPieces(nonActivePlayer);
             foreach (Piece p in opponentPieces)
             {
-                if (p.CanMoveTo(_board, _monarch.Position))
+                if (p.CanMoveTo(_board, monarch))
                 {
                     check = true;
                 }
@@ -173,16 +201,17 @@ namespace MyGame
             return check;
         }
 
-        public bool CheckMate()
+        public bool CheckMate(PlayerColour target)
         {
             List<Piece> pieces = new List<Piece>();
-            pieces = _board.FindAllPlayerPeices(ActivePlayer);
+            pieces = _board.FindAllPlayerPieces(target);
             bool checkmate = false;
             int checkcount = 0;
+            //Dictionary<Position, Piece> copy;
 
             foreach (Piece p in pieces)
             {
-                foreach (Position pos in _board.Cells.Keys)
+                foreach (Position pos in Enum.GetValues(typeof(Position)))
                 {
                     if (p.CanMoveTo(_board, pos))
                     {
@@ -190,7 +219,7 @@ namespace MyGame
                         _board.Remove(pos);
                         _board.Add(pos, p);
                         _board.Remove(p.Position);
-                        if (Check() == false)
+                        if (Check(target) == false)
                         {
                             checkcount++;
                         }
@@ -205,6 +234,23 @@ namespace MyGame
                 checkmate = true;
             }
             return checkmate;
+        }
+
+        private void DisplayWinner() { DisplayWinner(ActivePlayer); }
+        private void DisplayWinner(PlayerColour player)
+        {
+            if (player == PlayerColour.White)
+            {
+                SwinGame.ClearScreen(Color.White);
+                SwinGame.DrawText("WHITE WINS", Color.Black, "cour.ttf", 92, 100, 250);
+            }
+            else
+            {
+                SwinGame.ClearScreen(Color.Black);
+                SwinGame.DrawText("BLACK WINS", Color.White, "cour.ttf", 92, 100, 250);
+            }
+            SwinGame.RefreshScreen();
+            SwinGame.Delay(10000);
         }
     }
 }
