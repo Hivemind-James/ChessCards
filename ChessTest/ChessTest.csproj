@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoardTest.cs" />
-    <Compile Include="PieceTests.cs" />
+    <Compile Include="PieceFunctionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HelperFunctionUnitTests.cs" />
+    <Compile Include="PieceUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
