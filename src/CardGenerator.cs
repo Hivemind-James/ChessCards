@@ -32,7 +32,7 @@ namespace MyGame
                     return new Recruit(p, r);
                 case 8:
                     return new Demote(p, r);
-
+                    break;
             }
             return null;
         }
