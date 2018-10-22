@@ -167,16 +167,23 @@ namespace MyGame
             {
                 foreach (Position pos in _board.Cells.Keys)
                 {
-                    p.CanMoveTo(_board, pos);
-                    _board.Add(pos, p);
-                    if (Check() == false)
+                    if (p.CanMoveTo(_board, pos))
                     {
-                        checkcount++;
+                        Piece temp = _board.Find(pos);
+                        _board.Remove(pos);
+                        _board.Add(pos, p);
+                        _board.Remove(p.Position);
+                        if (Check() == false)
+                        {
+                            checkcount++;
+                        }
+                        _board.Add(p.Position, p);
+                        _board.Remove(pos);
+                        _board.Add(pos, temp);
                     }
-                    _board.Remove(pos);
                 }
             }
-            if (checkcount == 0)
+            if (checkcount < 1)
             {
                 checkmate = true;
             }
