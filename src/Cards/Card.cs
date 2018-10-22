@@ -9,10 +9,12 @@ namespace MyGame
 {
     abstract public class Card
     {
-        private int _minTurn;
+        protected int _minTurn;
+        protected bool _used;
         private PlayerColour _owner;
         private string _name;
         private string _description;
+
 
         protected float _smallWidth;
         protected float _smallHeight;
@@ -28,12 +30,16 @@ namespace MyGame
         {
             _minTurn = turn;
             _owner = player;
+            _used = false;
 
             _smallWidth = 80;
             _smallHeight = 120;
             _largeWidth = 250;
             _largeHeight = 350;
         }
+
+        public Card(PlayerColour player) : this (0, player)
+        {}
 
         public abstract bool IsPlayable(Game game);
         public abstract bool Resolve(Game game);
@@ -83,26 +89,38 @@ namespace MyGame
         private PlayerColour _enemy;
         private Position _selection;
 
-        public KillPiece(Kind kind, PlayerColour owner, int turn) : base(turn, owner)
+        public KillPiece(PlayerColour owner, Random random) : base (owner)
         {
-            _target = kind;
+            _target = GetRandomKind(random);
             _enemy = (owner == PlayerColour.White) ? PlayerColour.Black : PlayerColour.White;
             _selection = Position.NotAPosition;
+            _minTurn = _target.GetHashCode() * 5;
+            Description = "Click an opponent's " + _target.ToString() + " to kill it";
+            Name = "Kill a " + _target.ToString(); 
+        }
+
+
+        private Kind GetRandomKind(Random random)
+        {
+            return (Kind)(1 + random.Next(5));
         }
 
         public override bool IsPlayable(Game game)
         {
-            return game.Board.Contains(_target, _enemy) && game.Turn >= MinimumTurn;
+            return game.Board.Contains(_target, _enemy) && game.Turn >= MinimumTurn && !_used;
         }
 
         public override bool Resolve(Game game)
         {
-            Position temp;
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                temp = HelperFunctions.PositionClicked();
-                if (_selection == temp) game.Board.Remove(_selection);
-                else _selection = temp; 
+                Piece p = game.Board.Find(HelperFunctions.PositionClicked());
+                if (p.Kind == _target)
+                {
+                    game.Board.Remove(p.Position);
+                    _used = true;
+                    return true;
+                }
             }
             return false;
         }
@@ -110,29 +128,45 @@ namespace MyGame
 
     public class Promote : Card
     {
-        private List<Kind> _targets;
-        private List<Kind> _promoOptions;
+        private Kind _target;
 
-        public Promote (int turn, PlayerColour owner, List<Kind> targets, List<Kind> promotionOptions) : base(turn, owner)
+
+        public Promote (PlayerColour owner, Random random) : base(owner)
         {
-            _targets = targets;
-            _promoOptions = promotionOptions;
+            _target = GetRandomKind(random);
+            _minTurn = _target.GetHashCode() * 5;
+            Description = "Click a piece to upgrade it to a " + _target.ToString();
+            Name = "Promote to " + _target.ToString();
+
+        }
+
+        private Kind GetRandomKind(Random random)
+        {
+            return (Kind)(1 + random.Next(5));
         }
 
         public override bool IsPlayable(Game game)
         {
-            bool isPlayable = false;
-            foreach (Kind target in _targets)
-            {
-                isPlayable = game.Board.Contains(target, Owner) && game.Turn >= MinimumTurn;
-                if (isPlayable) break;
-            }
+            bool isPlayable = true;
+            if (_target == Kind.Queen && game.Board.Contains(Kind.Queen, Owner)) isPlayable = false;
+            isPlayable &= game.Turn >= MinimumTurn && !_used;
             return isPlayable;
         }
 
         public override bool Resolve(Game game)
         {
-            //if (_promoOptions.Contains(Kind.Queen) && game.Board.Contains(Kind.Queen, Owner)); //Player can't choose queen
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
+            {
+                Position pos = HelperFunctions.PositionClicked();
+                Piece p = game.Board.Find(pos);
+                if (p.Kind < _target)
+                {
+                    game.Board.Remove(pos);
+                    game.Board.Add(pos, HelperFunctions.NewPiece(_target, pos, Owner));
+                    _used = true;
+                    return true;
+                }
+            }
             return false;
         }
     }
@@ -250,7 +284,7 @@ namespace MyGame
 
     public class FourHorsemen : Card
     {
-        public FourHorsemen(PlayerColour player) : base(30, player)
+        public FourHorsemen(PlayerColour player) : base(30, player, "Four Horsemen")
         {
             Description = "Allows you to promote units to knights as long as you have less than 4, click each unit to upgrade";
         }
@@ -315,7 +349,7 @@ namespace MyGame
 
     public class Sidestep : Card
     {
-        public Sidestep(PlayerColour player) : base(5, player)
+        public Sidestep(PlayerColour player) : base(5, player, "Castle")
         {
             Description = "You May Move 1 Piece You Own To A Adjacent Square";
         }
@@ -346,7 +380,7 @@ namespace MyGame
 
     public class Matricide : Card
     {
-        public Matricide(PlayerColour player) : base(20, player)
+        public Matricide(PlayerColour player) : base(20, player, "Matricide")
         {
             Description = "This card makes it so you need to check/checkmate the queen";
         }
@@ -365,7 +399,7 @@ namespace MyGame
 
     public class Swap : Card
     {
-        public Swap(PlayerColour player) : base(10, player)
+        public Swap(PlayerColour player) : base(10, player, "Swap")
         {
             Description = "Swap Allows You To Swap The Positions Of Two Pieces You Control";
         }

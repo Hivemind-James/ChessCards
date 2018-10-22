@@ -33,7 +33,7 @@ namespace MyGame
 
             _turn = 1;
 
-            _state = GameState.PlayCard;
+            _state = GameState.Setup;
             _activeCard = null;
 
             _monarch = Kind.King;
@@ -133,6 +133,7 @@ namespace MyGame
                     p.Value.AddCard(r);
                 }
             }
+            _state = GameState.PlayCard;
         }
 
         public void Draw()

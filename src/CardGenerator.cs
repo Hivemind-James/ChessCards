@@ -12,27 +12,22 @@ namespace MyGame
 
         public static Card GenerateCard(Random r, PlayerColour p)
         {
-            switch (r.Next(9))
+            switch (r.Next(100))
             {
-                case 0:
+                case int n when n>=0 && n<3:
                     return new KillerQueen(p);
-                case 1:
+                case int n when n>=3 && n<15:
                     return new Swap(p);
-                case 2:
+                case int n when n>=16 && n<25:
                     return new Sidestep(p);
-                case 3:
+                case int n when n>=25 && n<30:
                     return new Matricide(p);
-                case 4:
+                case int n when n>=30 && n<35:
                     return new FourHorsemen(p);
-                case 5:
-                   // return new KillPiece(p, r);
-                case 6:
-                    //return new Promote(p, r);
-                case 7:
-                    //return new Recruit(p, r);
-                case 8:
-                    //return new Demote(p, r);
-                    break;
+                case int n when n>=35 && n<70:
+                    return new KillPiece(p, r);
+                case int n when n>=70:
+                    return new Promote(p, r);
             }
             return null;
         }

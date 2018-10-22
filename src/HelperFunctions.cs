@@ -85,6 +85,19 @@ namespace MyGame
             return (player == PlayerColour.White) ? PlayerColour.Black : PlayerColour.White;
         }
 
+        public static Piece NewPiece(Kind kind, Position pos, PlayerColour player)
+        {
+            switch (kind)
+            {
+                case Kind.Pawn  : return new Pawn(pos, player);
+                case Kind.Rook  : return new Rook(pos, player);
+                case Kind.Knight: return new Knight(pos, player);
+                case Kind.Bishop: return new Bishop(pos, player);
+                case Kind.Queen : return new Queen(pos, player);
+            }
+            return new NullPiece();
+        }
+
         public static Piece Setup(int position)
         {
             // This function returns the correct piece for a given space during setup
