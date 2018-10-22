@@ -101,7 +101,17 @@ namespace MyGame
 
         public void Setup()
         {
-            throw new NotImplementedException();
+            foreach (KeyValuePair<PlayerColour, Player> p in _players)
+            {
+                while (p.Value.HandSize < 10) // Don't know why It's doing this: Operator < cannot be applied to method groups and int.
+                {
+                    Random r = new Random();
+                    p.Value.AddCard(r);
+
+                }
+
+            }
+
         }
 
         public void Draw()
