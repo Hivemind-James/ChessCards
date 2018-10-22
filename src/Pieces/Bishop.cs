@@ -18,26 +18,23 @@ namespace MyGame
         public override bool CanMoveTo(Board board, Position position)
         {
             bool canMove = false;
-            bool hasSeenEnemy = false;
             List<int> relativePos = HelperFunctions.GetRelativePosition(Position, position);
             Position current = position;
 
             if (Math.Abs(relativePos[0]) == Math.Abs(relativePos[1]) && relativePos[0] != 0)
             {
+                if (board.Find(current).Owner != Owner)
+                {
+                    relativePos[0] -= Math.Sign(relativePos[0]);
+                    relativePos[1] -= Math.Sign(relativePos[1]);
+                    current = HelperFunctions.GetNewPosition(Position, relativePos);
+                    canMove = true;
+                }
                 while (relativePos[0] != 0)
                 {
-                    if (board.Find(current).Owner != Owner)
+                    if (board.Find(current).Owner == PlayerColour.NoOwner)
                     {
                         canMove = true;
-                        if (board.Find(current).Owner == HelperFunctions.GetOpponent(Owner))
-                        {
-                            if (hasSeenEnemy)
-                            {
-                                canMove = false;
-                                break;
-                            }
-                            else hasSeenEnemy = true;
-                        }
                         relativePos[0] -= Math.Sign(relativePos[0]);
                         relativePos[1] -= Math.Sign(relativePos[1]);
                         current = HelperFunctions.GetNewPosition(Position, relativePos);

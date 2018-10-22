@@ -14,7 +14,7 @@ namespace MyGame
         private int _turn;
         private GameState _state;
         private Piece _selected;
-        private int _activeCard;
+        private Card _activeCard;
 
         public Game()
         {
@@ -32,8 +32,9 @@ namespace MyGame
 
             _turn = 1;
 
-            _state = GameState.DoMove;
-            _activeCard = 0;
+            _state = GameState.PlayCard;
+            _activeCard = null;
+
         }
 
         public void DoMove()
@@ -94,7 +95,7 @@ namespace MyGame
         {
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                if (_players[ActivePlayer].PlayCard()) _state = GameState.DoMove;
+                if (_players[ActivePlayer].PlayCard(this)) _state = GameState.DoMove;
             }
         }
 
@@ -112,7 +113,6 @@ namespace MyGame
             _board.Draw(_selected);
             //draw cards
             _players[ActivePlayer].DrawHand();
-            SwinGame.FillRectangle(Color.Red, 20, 450, 80, 20);
         }
         public PlayerColour ActivePlayer
         {
@@ -136,6 +136,58 @@ namespace MyGame
             {
                 return _board;
             }
+        }
+
+        public bool Check()
+        {
+            List<Piece> opponentPieces = new List<Piece>();
+            PlayerColour nonActivePlayer = HelperFunctions.GetOpponent(ActivePlayer);
+            Piece _monarch = _board.Find(Kind.King, ActivePlayer);
+            bool check = false;
+
+            opponentPieces = _board.FindAllPlayerPeices(nonActivePlayer);
+            foreach (Piece p in opponentPieces)
+            {
+                if (p.CanMoveTo(_board, _monarch.Position))
+                {
+                    check = true;
+                }
+            }
+            return check;
+        }
+
+        public bool CheckMate()
+        {
+            List<Piece> pieces = new List<Piece>();
+            pieces = _board.FindAllPlayerPeices(ActivePlayer);
+            bool checkmate = false;
+            int checkcount = 0;
+
+            foreach (Piece p in pieces)
+            {
+                foreach (Position pos in _board.Cells.Keys)
+                {
+                    if (p.CanMoveTo(_board, pos))
+                    {
+                        Piece temp = _board.Find(pos);
+                        _board.Remove(pos);
+                        _board.Add(pos, p);
+                        _board.Remove(p.Position);
+                        if (Check() == false)
+                        {
+                            checkcount++;
+                        }
+                        _board.Add(p.Position, p);
+                        _board.Remove(pos);
+                        _board.Add(pos, temp);
+                    }
+                }
+            }
+            if (checkcount < 1)
+            {
+                checkmate = true;
+            }
+            return checkmate;
         }
     }
 }
