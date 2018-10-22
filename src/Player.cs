@@ -16,7 +16,7 @@ namespace MyGame
         public Player(PlayerColour player)
         {
             _hand = new List<Card>();
-            //_hand.Add(new Castle(_playerColour));
+            _hand.Add(new Castle(_playerColour));
 
             _selected = null;
 
