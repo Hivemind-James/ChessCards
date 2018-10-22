@@ -367,9 +367,13 @@ namespace MyGame
 
     public class Sidestep : Card
     {
-        public Sidestep(PlayerColour player) : base(5, player, "Castle")
+        Position _firstclick;
+        Position _secondclick;
+        public Sidestep(PlayerColour player) : base(5, player, "Sidestep")
         {
             Description = "You May Move 1 Piece You Own To A Adjacent Square";
+            _firstclick = Position.NotAPosition;
+            _secondclick = Position.NotAPosition;
         }
 
         public override bool IsPlayable(Game game)
@@ -382,15 +386,30 @@ namespace MyGame
         public override bool Resolve(Game game)
         {
             bool result = false;
-            Position _firstclick = HelperFunctions.PositionClicked();
-            Position _secondclick = HelperFunctions.PositionClicked();
-            Piece first = game.Board.Find(_firstclick);
-            if ((game.Board.Find(_secondclick).Kind == Kind.NullPiece) && (game.Board.Find(_firstclick).Owner == Owner))
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                game.Board.Remove(_firstclick);
-                game.Board.Add(_secondclick, first);
-                first.NewPosition(_secondclick);
-                result = true;
+                if (_firstclick != Position.NotAPosition && _secondclick != Position.NotAPosition)
+                {
+                    _firstclick = Position.NotAPosition;
+                    _secondclick = Position.NotAPosition;
+                }
+                if (_firstclick == Position.NotAPosition) _firstclick = HelperFunctions.PositionClicked();
+                else if (_secondclick == Position.NotAPosition) _secondclick = HelperFunctions.PositionClicked();
+                Piece first = null; 
+                Piece second = null;
+                if (_firstclick != Position.NotAPosition && _secondclick != Position.NotAPosition)
+                {
+                    first = game.Board.Find(_firstclick);
+                    second = game.Board.Find(_secondclick);
+                    if ((second.Owner == PlayerColour.NoOwner) && (first.Owner == Owner) && IsPlayable(game) && !_used) ;
+                    {
+                        game.Board.Remove(_firstclick);
+                        game.Board.Add(_secondclick, first);
+                        first.NewPosition(_secondclick);
+                        result = true;
+                        _used = true;
+                    }
+                }
             }
             return result;
         }
@@ -410,16 +429,27 @@ namespace MyGame
 
         public override bool Resolve(Game game)
         {
-            game.Monarch = Kind.Queen;
+
+            if (IsPlayable(game) && !_used)
+            {
+                game.Monarch = Kind.Queen;
+                _used = true;
+                return true;
+            }
             return false;
         }
     }
 
     public class Swap : Card
     {
+        Position _newclick;
+        Position _secondclick;
+
         public Swap(PlayerColour player) : base(10, player, "Swap")
         {
             Description = "Swap Allows You To Swap The Positions Of Two Pieces You Control";
+            _newclick = Position.NotAPosition;
+            _secondclick = Position.NotAPosition;
         }
         public override bool IsPlayable(Game game)
         {
@@ -431,22 +461,30 @@ namespace MyGame
         {
 
             bool result = false;
-            Position _newclick = HelperFunctions.PositionClicked();
-            Position _secondclick = HelperFunctions.PositionClicked();
-            Piece first = game.Board.Find(_newclick);
-            Piece second = game.Board.Find(_secondclick);
-            if (first.Owner == second.Owner)
+            if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                game.Board.Remove(_newclick);
-                game.Board.Remove(_secondclick);
-                game.Board.Add(_newclick, second);
-                game.Board.Add(_secondclick, first);
-                first.NewPosition(_secondclick);
-                second.NewPosition(_newclick);
-                result = true;
+                if (_newclick != Position.NotAPosition && _secondclick != Position.NotAPosition)
+                {
+                    _newclick = Position.NotAPosition;
+                    _secondclick = Position.NotAPosition;
+                }
+                if (_newclick == Position.NotAPosition) _newclick = HelperFunctions.PositionClicked();
+                else if (_secondclick == Position.NotAPosition) _secondclick = HelperFunctions.PositionClicked();
+                Piece first = game.Board.Find(_newclick);
+                Piece second = game.Board.Find(_secondclick);
+                if (first.Owner == Owner && second.Owner == Owner && IsPlayable(game) && !_used)
+                {
+                    game.Board.Remove(_newclick);
+                    game.Board.Remove(_secondclick);
+                    game.Board.Add(_newclick, second);
+                    game.Board.Add(_secondclick, first);
+                    first.NewPosition(_secondclick);
+                    second.NewPosition(_newclick);
+                    result = true;
+                    _used = true;
+                }
             }
             return result;
-
         }
     }
 
