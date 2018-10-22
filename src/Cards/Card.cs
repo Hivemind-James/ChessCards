@@ -23,6 +23,7 @@ namespace MyGame
 
         protected Rectangle _boundingbox;
 
+        protected Color textColor;
        
         public Card(int turn, PlayerColour player, string name) : this (turn, player)
         {
@@ -55,11 +56,17 @@ namespace MyGame
             _boundingbox.Height = _smallHeight;
             SwinGame.DrawRectangle(Color.Black, _boundingbox);
             SwinGame.DrawText(_name, Color.Black, Color.White, "text", FontAlignment.AlignCenter, _boundingbox);
+            _boundingbox.Y += 20;
+            SwinGame.DrawText(MinimumTurn.ToString(), Color.Black, Color.White, "text", FontAlignment.AlignCenter, _boundingbox);
         }
         public virtual void DrawLarge(int x, int y)
         {
             SwinGame.DrawRectangle(Color.Black, x, y, _largeWidth, _largeHeight);
             SwinGame.DrawText(Description, Color.Black, x, y + 30);
+            string turnTemp = "You can play this card";
+            SwinGame.DrawText(turnTemp, Color.Black, x, y + 50);
+            turnTemp = "on or after turn " + MinimumTurn.ToString();
+            SwinGame.DrawText(turnTemp, Color.Black, x, y + 60);
         }
         //public virtual void DrawOptions() { };
         public int MinimumTurn
@@ -123,7 +130,7 @@ namespace MyGame
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
                 Piece p = game.Board.Find(HelperFunctions.PositionClicked());
-                if (p.Kind == _target)
+                if (p.Kind == _target && p.Owner == HelperFunctions.GetOpponent(Owner) && IsPlayable(game))
                 {
                     game.Board.Remove(p.Position);
                     _used = true;
@@ -167,7 +174,7 @@ namespace MyGame
             {
                 Position pos = HelperFunctions.PositionClicked();
                 Piece p = game.Board.Find(pos);
-                if (p.Kind < _target)
+                if (p.Kind < _target && IsPlayable(game) && p.Kind > 0 && p.Owner == Owner)
                 {
                     game.Board.Remove(pos);
                     game.Board.Add(pos, HelperFunctions.NewPiece(_target, pos, Owner));
@@ -211,7 +218,10 @@ namespace MyGame
 
     public class KillerQueen : Card
     {
-        public KillerQueen(PlayerColour player) : base(20, player, "Killer Queen"){}
+        public KillerQueen(PlayerColour player) : base(20, player, "Killer Queen")
+        {
+            Description = "Click your queen to kill each piece around it";
+        }
 
         public override void DrawSmall(int count)
         {
@@ -235,7 +245,7 @@ namespace MyGame
             bool result = false;
             int i;
             int j;
-            if (queen.Kind == Kind.Queen && queen.Owner == Owner)
+            if (queen.Kind == Kind.Queen && queen.Owner == Owner && IsPlayable(game))
             {
                 for (i = -1; i < 2; i++)
                 {
@@ -306,11 +316,11 @@ namespace MyGame
 
         public override bool Resolve(Game game)
         {
-            while (game.Board.Count(Kind.Knight, Owner) < 4)
+            if (game.Board.Count(Kind.Knight, Owner) < 4)
             {
                 Position _click = HelperFunctions.PositionClicked();
                 Piece first = game.Board.Find(_click);
-                if (first.Owner == Owner)
+                if (first.Owner == Owner && first.Kind < Kind.Queen && first.Kind > 0 && IsPlayable(game))
                 {
                     game.Board.Remove(_click);
                     game.Board.Add(_click, new Knight(_click, Owner));
