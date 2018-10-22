@@ -14,7 +14,7 @@ namespace MyGame
         private int _turn;
         private GameState _state;
         private Piece _selected;
-        private int _activeCard;
+        private Card _activeCard;
 
         public Game()
         {
@@ -32,8 +32,9 @@ namespace MyGame
 
             _turn = 1;
 
-            _state = GameState.DoMove;
-            _activeCard = 0;
+            _state = GameState.PlayCard;
+            _activeCard = null;
+
         }
 
         public void DoMove()
@@ -94,7 +95,7 @@ namespace MyGame
         {
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
             {
-                if (_players[ActivePlayer].PlayCard()) _state = GameState.DoMove;
+                if (_players[ActivePlayer].PlayCard(this)) _state = GameState.DoMove;
             }
         }
 
@@ -112,7 +113,6 @@ namespace MyGame
             _board.Draw(_selected);
             //draw cards
             _players[ActivePlayer].DrawHand();
-            SwinGame.FillRectangle(Color.Red, 20, 450, 80, 20);
         }
         public PlayerColour ActivePlayer
         {

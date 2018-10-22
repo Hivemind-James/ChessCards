@@ -10,14 +10,14 @@ namespace MyGame
     public class Player
     {
         private List<Card> _hand;
-        private int _selected;
+        private Card _selected;
 
         public Player(PlayerColour player)
         {
             _hand = new List<Card>();
             Card card = new KillerQueen(1, player);
             for (int i = 0; i < 10; i++) _hand.Add(card);
-            _selected = 0;
+            _selected = null;
         }
 
         public void DrawHand()
@@ -25,15 +25,19 @@ namespace MyGame
             for (int i = 0; i < _hand.Count; i++)
             {
                 _hand[i].DrawSmall(i);
-                if (_selected > 0) _hand[_selected - 1].DrawLarge(0, 0);
-                //SwinGame.DrawRectangle(Color.Black, i * 80, 100, 80, 100);
-            }
+                if (_selected != null)
+                {
+                    _selected.DrawLarge(0, 0);
+                }
+                SwinGame.DrawRectangle(Color.Black, 50, 400, 150, 50);
+                SwinGame.DrawText("Skip to Move", Color.Black, 50, 400);            }
         }
 
-        public bool PlayCard()
+        public bool PlayCard(Game game)
         {
             bool cardResolved = false;
-            switch (DoClick())
+            int result = DoClick(game);
+            switch (result)
             {
                 case 0  :   //First Card
                 case 1  :
@@ -45,23 +49,28 @@ namespace MyGame
                 case 7  :
                 case 8  :
                 case 9  :   //Last Card
-                    _selected = 1 + DoClick();
+                    _selected = _hand[result];
                     break;
                 case 10 :
                     cardResolved = true;
+                    _selected = null;
+                    break;
+                default :
                     break;
             }
             return cardResolved;
         }
 
-        private int DoClick()
+        private int DoClick(Game game)
         {
             if (SwinGame.MousePosition().Y > 480)
-            {
+            { 
                 Console.WriteLine((int)(SwinGame.MousePosition().X / 80));
                 return (int)(SwinGame.MousePosition().X / 80);
             }
-            else return 10;
+            if (SwinGame.PointInRect(SwinGame.MousePosition(), 50, 400, 150,50)) return 10;
+            if (_selected != null && _selected.Resolve(game)) return 10;
+            return 11;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace MyGame
         }
 
         public abstract bool IsPlayable(Game game);
-        public abstract void Resolve(Game game);
+        public abstract bool Resolve(Game game);
         public virtual void DrawSmall(int count)
         {
             SwinGame.DrawRectangle(Color.Black, (count * _smallWidth), SwinGame.ScreenHeight() - _smallHeight, _smallWidth, _smallHeight);
@@ -46,7 +46,7 @@ namespace MyGame
         {
             SwinGame.DrawRectangle(Color.Black, x, y, _largeWidth, _largeHeight);
         }
-
+        //public virtual void DrawOptions() { };
         public int MinimumTurn
         {
             get
@@ -88,7 +88,7 @@ namespace MyGame
             return game.Board.Contains(_target, _enemy) && game.Turn >= MinimumTurn;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             Position temp;
             if (SwinGame.MouseClicked(MouseButton.LeftButton))
@@ -97,6 +97,7 @@ namespace MyGame
                 if (_selection == temp) game.Board.Remove(_selection);
                 else _selection = temp; 
             }
+            return false;
         }
     }
 
@@ -122,10 +123,10 @@ namespace MyGame
             return isPlayable;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //if (_promoOptions.Contains(Kind.Queen) && game.Board.Contains(Kind.Queen, Owner)); //Player can't choose queen
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -153,9 +154,9 @@ namespace MyGame
             return isPlayable;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -178,9 +179,9 @@ namespace MyGame
             return true;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -190,14 +191,14 @@ namespace MyGame
         public override bool IsPlayable(Game game)
         {
             //You have at least 1 rook with an empty space next to it
-            throw new NotImplementedException();
+            return false;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //you select an empty space next to a rook you control
             //a barricade piece is placed in the selected space
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -208,15 +209,15 @@ namespace MyGame
         public override bool IsPlayable(Game game)
         {
             // you have a king without atleast 1 empty space next to it
-            throw new NotImplementedException();
+            return false;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //player chooses 2 empty spaces next to their king (or the king's space)
             //The king goes to the first space
             //a body double is created in the second space
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -232,12 +233,13 @@ namespace MyGame
                     game.Board.Count(Owner) > 4;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             while (game.Board.Count(Kind.Knight, Owner) < 4)
             {
                 //promote piece to Knight
             }
+            return false;
         }
     }
 
@@ -267,12 +269,12 @@ namespace MyGame
             return _rooks.Count > 0 && game.Turn >= MinimumTurn;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //Click which rook to castle with
             //King is moved 2 spaces towards selected rook
             //rook is moved to the opposite side of the king
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -282,12 +284,12 @@ namespace MyGame
 
         public override bool IsPlayable(Game game)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -300,10 +302,10 @@ namespace MyGame
             return game.Board.Contains(Kind.Queen, PlayerColour.White) && game.Board.Contains(Kind.Queen, PlayerColour.Black) && game.Turn >= MinimumTurn;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //game.ImportantPiece = Kind.Queen;
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -312,12 +314,12 @@ namespace MyGame
         public Swap(int turn, PlayerColour player) : base(turn, player) { }
         public override bool IsPlayable(Game game)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -329,11 +331,11 @@ namespace MyGame
             return game.Turn >= MinimumTurn && game.Board.Contains(Kind.Bishop, Owner);
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //give the owner a Papal Election card
             //turn all bishops into Cardinals
-            throw new NotImplementedException();
+            return false;
         }
     }
 
@@ -348,10 +350,10 @@ namespace MyGame
             //      > game.Board.Count(Kind.Cardinal, HelperFunctions.GetOpponent(Owner))
         }
 
-        public override void Resolve(Game game)
+        public override bool Resolve(Game game)
         {
             //player selects a cardinal they own, it becomes a pope
-            throw new NotImplementedException();
+            return false;
         }
     }
 
