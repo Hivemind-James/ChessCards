@@ -15,13 +15,14 @@ namespace MyGame
 
     public enum PlayerColour
     {
+        NoOwner,
         White,
-        Black,
-        NoOwner
+        Black
     }
 
     public enum Kind
     {
+        NullPiece,
         Pawn,
         Rook,
         Knight,
