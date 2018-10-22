@@ -44,8 +44,8 @@ namespace MyGame
                     _selected.DrawLarge(0, 0);
                 }
             }
-            SwinGame.DrawRectangle(Color.Black, 50, 400, 150, 50);
-            SwinGame.DrawText("Skip to Move", Color.Black, 50, 400);
+            SwinGame.DrawRectangle(Color.Black, 50, 300, 150, 50);
+            SwinGame.DrawText("Skip to Move", Color.Black, 50, 300);
         }
 
         public bool PlayCard(Game game)
@@ -83,7 +83,7 @@ namespace MyGame
                 Console.WriteLine((int)(SwinGame.MousePosition().X / 80));
                 return (int)(SwinGame.MousePosition().X / 80);
             }
-            if (SwinGame.PointInRect(SwinGame.MousePosition(), 50, 400, 150,50)) return 10;
+            if (SwinGame.PointInRect(SwinGame.MousePosition(), 50, 300, 150,50)) return 10;
             if (_selected != null && _selected.Resolve(game)) return 10;
             return 11;
         }

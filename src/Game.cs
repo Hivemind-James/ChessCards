@@ -91,7 +91,7 @@ namespace MyGame
                 SwinGame.ClearScreen(Color.White);
                 if (SwinGame.MouseClicked(MouseButton.LeftButton))
                 {
-                    if (SwinGame.PointInRect(SwinGame.MousePosition(), 50, 460, 150, 50))
+                    if (SwinGame.PointInRect(SwinGame.MousePosition(), 50, 360, 150, 50))
                     {
                         DisplayWinner(HelperFunctions.GetOpponent(ActivePlayer));
                         break;
@@ -145,9 +145,9 @@ namespace MyGame
             _board.Draw(_selected);
             //draw cards
             _players[ActivePlayer].DrawHand();
-            SwinGame.FillRectangle(Color.Gray, 50, 460, 150, 50);
-            SwinGame.DrawRectangle(Color.Black, 50, 460, 150, 50);
-            SwinGame.DrawText("Concede", Color.Black, 50, 460);
+            SwinGame.FillRectangle(Color.Gray, 50, 360, 150, 50);
+            SwinGame.DrawRectangle(Color.Black, 50, 360, 150, 50);
+            SwinGame.DrawText("Concede", Color.Black, 50, 360);
             string stateString = (_state == GameState.DoMove) ? ": Move a piece" : ": Play a card";
             stateString = ActivePlayer.ToString() + stateString;
             SwinGame.DrawText(stateString, Color.Black, 0, 0);
